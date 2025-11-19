@@ -11,6 +11,7 @@ public class GamePad extends MovementController {
     private int jumpKey = KeyEvent.VK_SPACE;
     private int leftKey = KeyEvent.VK_A;
     private int rightKey = KeyEvent.VK_D;
+    private int screenKey = KeyEvent.VK_F;
 
     public GamePad() {
         bindKey(quitKey);
@@ -18,6 +19,7 @@ public class GamePad extends MovementController {
         bindKey(jumpKey);
         bindKey(leftKey);
         bindKey(rightKey);
+        bindKey(screenKey);
     }
 
     public boolean isQuitPressed() {
@@ -30,7 +32,7 @@ public class GamePad extends MovementController {
 
     public boolean isJumpPressed() {return isKeyPressed(jumpKey);}
 
-    public boolean screenFormat(boolean screen) {return !screen;}
+    public boolean isScreenPressed() {return isKeyPressed(screenKey);}
 
     //public boolean isLeftPressed() {return isKeyPressed(leftKey);}
     //public boolean isRightPressed() {return isKeyPressed(rightKey);}

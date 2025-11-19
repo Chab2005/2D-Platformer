@@ -37,7 +37,7 @@ public class AlphaVikingGame extends Game {
             e.printStackTrace();
         }
 
-        RenderingEngine.getInstance().getScreen().fullscreen();
+        RenderingEngine.getInstance().getScreen().windowed();
     }
 
     @Override

@@ -12,16 +12,15 @@ import java.io.IOException;
 
 public class Animation {
 
-    private static final String SPRITE_PATH = "images/player.png";
+    private static final String SPRITE_PATH = "images/player-sheet.png";
     private static final int ANIMATION_SPEED = 8;
     private Image[] rightFrames;
     private Image[] leftFrames;
-    private Image[] upFrames;
-    private Image[] downFrames;
-    private int currentAnimationFrame = 1;
+    private int currentAnimationFrame = 0;
     private int nextFrame = ANIMATION_SPEED;
     private BufferedImage spriteSheet;
     private StaticEntity entity;
+    private Direction lastDirection;
 
 
     public Animation(StaticEntity entity) {
@@ -40,18 +39,24 @@ public class Animation {
     }
 
     public void idle() {
-        currentAnimationFrame = 1; // Idle
+        currentAnimationFrame = 0; // Idle
     }
 
     public void drawFrame(Direction currentDirection, Canvas canvas) {
+
         if (currentDirection == Direction.RIGHT) {
             canvas.drawImage(rightFrames[currentAnimationFrame], entity.getX(), entity.getY());
+            lastDirection = currentDirection;
         } else if (currentDirection == Direction.LEFT) {
             canvas.drawImage(leftFrames[currentAnimationFrame], entity.getX(), entity.getY());
-        } else if (currentDirection == Direction.UP) {
-            canvas.drawImage(upFrames[currentAnimationFrame], entity.getX(), entity.getY());
-        } else if (currentDirection == Direction.DOWN) {
-            canvas.drawImage(downFrames[currentAnimationFrame], entity.getX(), entity.getY());
+            lastDirection = currentDirection;
+        }  else if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
+            if (lastDirection == Direction.RIGHT) {
+                canvas.drawImage(spriteSheet.getSubimage(32,0,entity.getWidth(),entity.getHeight()), entity.getX(), entity.getY());
+            }
+            if (lastDirection == Direction.LEFT) {
+                canvas.drawImage(spriteSheet.getSubimage(0,0,entity.getWidth(),entity.getHeight()), entity.getX(), entity.getY());
+            }
         }
     }
 
@@ -70,24 +75,16 @@ public class Animation {
     }
 
     private void loadAnimationFrames() {
-        downFrames = new Image[3];
-        downFrames[0] = spriteSheet.getSubimage(0, 128, entity.getWidth(),entity.getHeight());
-        downFrames[1] = spriteSheet.getSubimage(32, 128, entity.getWidth(),entity.getHeight());
-        downFrames[2] = spriteSheet.getSubimage(64, 128, entity.getWidth(),entity.getHeight());
 
         leftFrames = new Image[3];
-        leftFrames[0] = spriteSheet.getSubimage(0, 160, entity.getWidth(),entity.getHeight());
-        leftFrames[1] = spriteSheet.getSubimage(32, 160, entity.getWidth(),entity.getHeight());
-        leftFrames[2] = spriteSheet.getSubimage(64, 160, entity.getWidth(),entity.getHeight());
+        leftFrames[0] = spriteSheet.getSubimage(0, 18, entity.getWidth(),entity.getHeight());
+        leftFrames[1] = spriteSheet.getSubimage(0, 36, entity.getWidth(),entity.getHeight());
+        leftFrames[2] = spriteSheet.getSubimage(0, 18+36, entity.getWidth(),entity.getHeight());
 
         rightFrames = new Image[3];
-        rightFrames[0] = spriteSheet.getSubimage(0, 192, entity.getWidth(),entity.getHeight());
-        rightFrames[1] = spriteSheet.getSubimage(32, 192, entity.getWidth(),entity.getHeight());
-        rightFrames[2] = spriteSheet.getSubimage(64, 192, entity.getWidth(),entity.getHeight());
+        rightFrames[0] = spriteSheet.getSubimage(32, 18, entity.getWidth(),entity.getHeight());
+        rightFrames[1] = spriteSheet.getSubimage(32, 36, entity.getWidth(),entity.getHeight());
+        rightFrames[2] = spriteSheet.getSubimage(32, 18+36, entity.getWidth(),entity.getHeight());
 
-        upFrames = new Image[3];
-        upFrames[0] = spriteSheet.getSubimage(0, 224, entity.getWidth(),entity.getHeight());
-        upFrames[1] = spriteSheet.getSubimage(32, 224,entity.getWidth(),entity.getHeight());
-        upFrames[2] = spriteSheet.getSubimage(64, 224, entity.getWidth(),entity.getHeight());
     }
 }

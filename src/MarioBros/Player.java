@@ -12,9 +12,10 @@ public class Player extends ControllableEntity {
 
     public Player(MovementController controller) {
         super(controller);
-        setDimension(32, 32);
+        setDimension(16, 16);
+        moveTo(150,150);
         setSpeed(3);
-        animation = new Animation(this);
+        this.animation = new Animation(this);
         animation.load();
     }
 

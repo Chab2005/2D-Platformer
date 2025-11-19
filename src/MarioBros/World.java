@@ -21,7 +21,5 @@ public class World {
         }
     }
 
-    public void draw(Canvas canvas) {
-        canvas.drawImage(background, 0, 0);
-    }
+    public void draw(Canvas canvas) {canvas.drawImage(background, 0, 0);}
 }

@@ -5,7 +5,7 @@ import java.awt.*;
 public abstract class MovableEntity extends StaticEntity {
 
     private int speed = 1;
-    private Direction direction = Direction.UP;
+    private Direction direction = Direction.RIGHT;
     private Collision collision;
     private int lastX = Integer.MIN_VALUE;
     private int lastY = Integer.MIN_VALUE;
