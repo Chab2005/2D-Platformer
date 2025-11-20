@@ -2,6 +2,7 @@ package MarioBros;
 
 import Doctrina.Canvas;
 import Doctrina.ControllableEntity;
+import Doctrina.Direction;
 import Doctrina.MovementController;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ public class Player extends ControllableEntity {
     public void update() {
         super.update();
         moveWithController();
-        if (hasMoved()) {
+        if (isMoving()) {
             animation.entityAnimation();
         } else {
             animation.idle();

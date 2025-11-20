@@ -12,6 +12,7 @@ public class Screen {
     private DisplayMode fullscreenDisplayMode;
     private DisplayMode windowedDisplayMode;
     private boolean isFullscreenMode;
+    private double scale;
 
     public Screen() {
         initializeFrame();
@@ -63,6 +64,14 @@ public class Screen {
         return isFullscreenMode ? fullscreenDisplayMode.getHeight() : frame.getHeight();
     }
 
+    public int getFrameWidth() {
+        return frame.getWidth();
+    }
+
+    public int getFrameHeight() {
+        return frame.getHeight();
+    }
+
     public void fullscreen() {
         if (device.isFullScreenSupported()) {
             device.setFullScreenWindow(frame);
@@ -84,10 +93,20 @@ public class Screen {
     public void screenToggle() {
         if (isFullscreenMode) {
             windowed();
+            System.out.println("FS : "+fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
+            System.out.println("H "+frame.getHeight());
+            System.out.println("W "+frame.getWidth());
+            isFullscreenMode = false;
         } else  {
             fullscreen();
+            System.out.println("FS : "+fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
+            System.out.println("H "+frame.getHeight());
+            System.out.println("W "+frame.getWidth());
+            isFullscreenMode = true;
         }
     }
+
+
 
     private DisplayMode findClosestDisplayMode(int width, int height) {
         DisplayMode[] displayModes = device.getDisplayModes();
@@ -134,4 +153,6 @@ public class Screen {
         fullscreenDisplayMode = device.getDisplayMode();
         windowedDisplayMode = device.getDisplayMode();
     }
+
+
 }

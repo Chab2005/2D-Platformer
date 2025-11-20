@@ -22,6 +22,8 @@ public class GamePad extends MovementController {
         bindKey(screenKey);
     }
 
+
+
     public boolean isQuitPressed() {
         return isKeyPressed(quitKey);
     }

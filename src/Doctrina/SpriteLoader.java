@@ -1,0 +1,21 @@
+package Doctrina;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+
+public class SpriteLoader {
+    private static final String SPRITE_PATH = "images/player-sheet.png";
+
+
+
+    public BufferedImage loadSpriteSheet() {
+        try {
+             return ImageIO.read(this.getClass().getClassLoader()
+                    .getResourceAsStream(SPRITE_PATH));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

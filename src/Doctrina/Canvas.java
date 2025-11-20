@@ -8,6 +8,7 @@ public class Canvas {
 
     public Canvas(Graphics2D graphics) {
         this.graphics = graphics;
+
     }
 
     public void drawRectangle(int x, int y, int width, int height, Paint paint) {
@@ -31,5 +32,9 @@ public class Canvas {
 
     public void drawImage(Image image, int x, int y) {
         graphics.drawImage(image, x, y, null);
+    }
+
+    public void drawImage(Image image , StaticEntity entity) {
+        graphics.drawImage(image, entity.x, entity.y,null);
     }
 }

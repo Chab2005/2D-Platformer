@@ -1,9 +1,7 @@
 package MarioBros;
 
+import Doctrina.*;
 import Doctrina.Canvas;
-import Doctrina.Direction;
-import Doctrina.MovableEntity;
-import Doctrina.StaticEntity;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,7 +10,7 @@ import java.io.IOException;
 
 public class Animation {
 
-    private static final String SPRITE_PATH = "images/player-sheet.png";
+
     private static final int ANIMATION_SPEED = 8;
     private Image[] rightFrames;
     private Image[] leftFrames;
@@ -21,10 +19,11 @@ public class Animation {
     private BufferedImage spriteSheet;
     private StaticEntity entity;
     private Direction lastDirection;
-
+    private SpriteLoader spriteLoader;
 
     public Animation(StaticEntity entity) {
         this.entity = entity;
+        this.spriteLoader = new SpriteLoader();
     }
 
     public void entityAnimation() {
@@ -45,46 +44,48 @@ public class Animation {
     public void drawFrame(Direction currentDirection, Canvas canvas) {
 
         if (currentDirection == Direction.RIGHT) {
-            canvas.drawImage(rightFrames[currentAnimationFrame], entity.getX(), entity.getY());
+            canvas.drawImage(rightFrames[currentAnimationFrame], entity);
             lastDirection = currentDirection;
         } else if (currentDirection == Direction.LEFT) {
-            canvas.drawImage(leftFrames[currentAnimationFrame], entity.getX(), entity.getY());
+            canvas.drawImage(leftFrames[currentAnimationFrame], entity);
             lastDirection = currentDirection;
         }  else if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
             if (lastDirection == Direction.RIGHT) {
-                canvas.drawImage(spriteSheet.getSubimage(32,0,entity.getWidth(),entity.getHeight()), entity.getX(), entity.getY());
+                canvas.drawImage( spriteSheet.getSubimage(32,0,entity.getWidth(),entity.getHeight()) , entity);
             }
             if (lastDirection == Direction.LEFT) {
-                canvas.drawImage(spriteSheet.getSubimage(0,0,entity.getWidth(),entity.getHeight()), entity.getX(), entity.getY());
+                canvas.drawImage(getFrame(),entity);
             }
         }
     }
 
     public void load() {
-        loadSpriteSheet();
+        spriteSheet = spriteLoader.loadSpriteSheet();
         loadAnimationFrames();
     }
 
-    private void loadSpriteSheet() {
-        try {
-            spriteSheet = ImageIO.read(this.getClass().getClassLoader()
-                    .getResourceAsStream(SPRITE_PATH));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     private void loadAnimationFrames() {
 
-        leftFrames = new Image[3];
-        leftFrames[0] = spriteSheet.getSubimage(0, 18, entity.getWidth(),entity.getHeight());
-        leftFrames[1] = spriteSheet.getSubimage(0, 36, entity.getWidth(),entity.getHeight());
-        leftFrames[2] = spriteSheet.getSubimage(0, 18+36, entity.getWidth(),entity.getHeight());
+        leftFrames = new Image[4];
+        leftFrames[0] = getFrame(0,18);
+        leftFrames[1] = getFrame(0,54);
+        leftFrames[2] = getFrame(0,71);
+        leftFrames[3] = getFrame(0,36);
 
-        rightFrames = new Image[3];
-        rightFrames[0] = spriteSheet.getSubimage(32, 18, entity.getWidth(),entity.getHeight());
-        rightFrames[1] = spriteSheet.getSubimage(32, 36, entity.getWidth(),entity.getHeight());
-        rightFrames[2] = spriteSheet.getSubimage(32, 18+36, entity.getWidth(),entity.getHeight());
+        rightFrames = new Image[4];
+        rightFrames[0] = getFrame(32,18);
+        rightFrames[1] = getFrame(32,54);
+        rightFrames[2] = getFrame(32,71);
+        rightFrames[3] = getFrame(32,36);
 
+    }
+
+    private BufferedImage getFrame() {
+        return spriteSheet.getSubimage(0,0,entity.getWidth(),entity.getHeight());
+    }
+
+    private BufferedImage getFrame(int x, int y) {
+        return spriteSheet.getSubimage(x,y,entity.getWidth(),entity.getHeight());
     }
 }

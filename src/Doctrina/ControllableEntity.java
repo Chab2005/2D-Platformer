@@ -11,4 +11,8 @@ public abstract class ControllableEntity extends MovableEntity {
     public void moveWithController() {
         move(controller.getDirection());
     }
+
+    public boolean isMoving() {
+        return controller.isMoving();
+    }
 }

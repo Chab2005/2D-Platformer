@@ -1,28 +1,39 @@
 package MarioBros;
 
-import Doctrina.Canvas;
-import Doctrina.Game;
-import Doctrina.RenderingEngine;
+import Doctrina.*;
+import Doctrina.RenderingRepository;
+
 
 public class MarioBrosGame extends Game {
 
+    private RenderingRepository instance;
     private Player player;
     private Enemy enemy;
     private GamePad gamePad;
     private World world;
-    private boolean fullscreen;
+    private Camera camera;
+
+    private boolean isfullscreen;
 
     @Override
     public void initialize() {
+        instance = RenderingRepository.getInstance();
+
         gamePad = new GamePad();
         player = new Player(gamePad);
-        enemy = new Enemy();
+
+        enemy = new Enemy(camera);
         enemy.moveTo(300, 300);
+
         world = new World();
         world.load();
-
+        camera = new Camera(player);
+        instance.registerEntities(world);
+        instance.registerEntities(player);
+        instance.registerEntities(enemy);
         RenderingEngine.getInstance().getScreen().fullscreen();
-        fullscreen = false;
+
+        isfullscreen = true;
     }
 
     @Override
@@ -31,19 +42,23 @@ public class MarioBrosGame extends Game {
             stop();
         }
 
-        if (gamePad.isScreenPressed() && !fullscreen) {
+        if (gamePad.isScreenPressed() && isfullscreen) {
             RenderingEngine.getInstance().getScreen().screenToggle();
         }
-        fullscreen = gamePad.isScreenPressed();
+        isfullscreen = !gamePad.isScreenPressed();
 
+        enemy.update();
+        if (player.isMoving()) {
+            camera.follow();
+        }
 
         player.update();
+
+
     }
 
     @Override
     public void draw(Canvas canvas) {
-
-        world.draw(canvas);
-        player.draw(canvas);
+        instance.drawRepository(canvas);
     }
 }

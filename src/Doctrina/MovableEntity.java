@@ -87,13 +87,21 @@ public abstract class MovableEntity extends StaticEntity {
         move(Direction.DOWN);
     }
 
-    public void moveLeft() {
-        move(Direction.LEFT);
-    }
+    public void moveLeft() {move(Direction.LEFT);}
 
     public void moveRight() {
         move(Direction.RIGHT);
     }
+
+    public boolean isMovingRight() {
+        return (direction == Direction.RIGHT);
+    }
+
+    public boolean isMovingLeft() {return (direction == Direction.LEFT);}
+
+    public boolean isMovingDown() {return (direction == Direction.DOWN);}
+
+    public boolean isMovingUp() {return (direction == Direction.UP);}
 
     public int getSpeed() {
         return speed;

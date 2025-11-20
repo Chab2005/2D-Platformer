@@ -53,7 +53,7 @@ public class RenderingEngine {
 
     private void initializePanel() {
         panel = new JPanel();
-        panel.setBackground(Color.BLUE);
+        panel.setBackground(Color.CYAN);
         panel.setFocusable(true);
         panel.setDoubleBuffered(true);
         screen.setPanel(panel);
