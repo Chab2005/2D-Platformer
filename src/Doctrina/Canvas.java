@@ -37,4 +37,8 @@ public class Canvas {
     public void drawImage(Image image , StaticEntity entity) {
         graphics.drawImage(image, entity.x, entity.y,null);
     }
+
+    public void drawImage(StaticEntity entity) {
+        graphics.drawImage(entity.sprite,entity.x, entity.y, null);
+    }
 }

@@ -53,8 +53,6 @@ public class MarioBrosGame extends Game {
         }
 
         player.update();
-
-
     }
 
     @Override

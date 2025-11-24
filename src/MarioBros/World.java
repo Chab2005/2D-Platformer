@@ -1,6 +1,7 @@
 package MarioBros;
 
 import Doctrina.Canvas;
+import Doctrina.CollidableRepository;
 import Doctrina.StaticEntity;
 
 import javax.imageio.ImageIO;
@@ -9,15 +10,15 @@ import java.io.IOException;
 
 public class World extends StaticEntity {
 
-    private static String mapPath = "images/level-1-1.png";
+    private static String mapPath = "images/tilesheet/tilesheet.png";
     private Image background;
+    private CollidableRepository collidableRepository;
 
     public World() {
+        collidableRepository = collidableRepository.getInstance();
         x = 0;
         y = 0;
     }
-
-
 
     public void load() {
         try {
