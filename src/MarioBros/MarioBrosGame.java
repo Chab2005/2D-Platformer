@@ -3,6 +3,8 @@ package MarioBros;
 import Doctrina.*;
 import Doctrina.RenderingRepository;
 
+import java.io.IOException;
+
 
 public class MarioBrosGame extends Game {
 
@@ -12,6 +14,7 @@ public class MarioBrosGame extends Game {
     private GamePad gamePad;
     private World world;
     private Camera camera;
+    private JsonParser jsonParser;
 
     private boolean isfullscreen;
 

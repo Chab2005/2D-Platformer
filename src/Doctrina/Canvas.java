@@ -1,5 +1,7 @@
 package Doctrina;
 
+import MarioBros.Brick;
+
 import java.awt.*;
 
 public class Canvas {
@@ -38,7 +40,7 @@ public class Canvas {
         graphics.drawImage(image, entity.x, entity.y,null);
     }
 
-    public void drawImage(StaticEntity entity) {
-        graphics.drawImage(entity.sprite,entity.x, entity.y, null);
+    public void drawImage(Brick entity) {
+     //   graphics.drawImage(entity.sprite,entity.x, entity.y, null);
     }
 }
