@@ -1,8 +1,10 @@
 package MarioBros;
 
 import Doctrina.*;
+import Doctrina.Canvas;
 import Doctrina.RenderingRepository;
 
+import java.awt.*;
 import java.io.IOException;
 
 
@@ -32,11 +34,14 @@ public class MarioBrosGame extends Game {
         world.load();
         camera = new Camera(player);
         instance.registerEntities(world);
-        instance.registerEntities(player);
         instance.registerEntities(enemy);
+        instance.registerEntities(player);
+
         RenderingEngine.getInstance().getScreen().fullscreen();
 
+
         isfullscreen = true;
+        ;
     }
 
     @Override

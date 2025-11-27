@@ -19,6 +19,10 @@ public class RenderingEngine {
         return instance;
     }
 
+    public void setBackgroundColor(Color color) {
+        panel.setBackground(color);
+    }
+
     public Screen getScreen() {
         return screen;
     }

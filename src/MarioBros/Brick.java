@@ -2,13 +2,14 @@ package MarioBros;
 
 import Doctrina.Canvas;
 import Doctrina.CollidableRepository;
+import Doctrina.RenderingRepository;
 import Doctrina.StaticEntity;
 
 import java.awt.*;
 
 public class Brick extends StaticEntity {
 
-    private Image spr;
+    private Image sprite;
 
     public Brick(int x, int y) {
         setDimension(16, 16);
@@ -16,8 +17,15 @@ public class Brick extends StaticEntity {
         CollidableRepository.getInstance().registerEntity(this);
     }
 
+    public Brick(int x, int y,Image sprite) {
+        this.sprite = sprite;
+        setDimension(16, 16);
+        moveTo(x, y);
+        CollidableRepository.getInstance().registerEntity(this);
+    }
+
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(this.spr, 0, 0);
+        canvas.drawImage(this.sprite, 0, 0);
     }
 }

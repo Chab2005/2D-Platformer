@@ -52,6 +52,10 @@ public class Screen {
         System.out.println("Fullscreen Mode: " + fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
     }
 
+    public void setBackground(Color color) {
+        frame.setBackground(color);
+    }
+
     public void setPanel(JPanel panel) {
         frame.add(panel);
     }
@@ -93,19 +97,12 @@ public class Screen {
     public void screenToggle() {
         if (isFullscreenMode) {
             windowed();
-            System.out.println("FS : "+fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
-            System.out.println("H "+frame.getHeight());
-            System.out.println("W "+frame.getWidth());
             isFullscreenMode = false;
         } else  {
             fullscreen();
-            System.out.println("FS : "+fullscreenDisplayMode.getWidth() + "x" + fullscreenDisplayMode.getHeight());
-            System.out.println("H "+frame.getHeight());
-            System.out.println("W "+frame.getWidth());
             isFullscreenMode = true;
         }
     }
-
 
 
     private DisplayMode findClosestDisplayMode(int width, int height) {

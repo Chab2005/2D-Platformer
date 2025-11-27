@@ -41,6 +41,6 @@ public class Canvas {
     }
 
     public void drawImage(Brick entity) {
-     //   graphics.drawImage(entity.sprite,entity.x, entity.y, null);
+        //graphics.drawImage(entity.spr,entity.x, entity.y, null);
     }
 }
