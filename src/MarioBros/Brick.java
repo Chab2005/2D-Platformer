@@ -26,6 +26,6 @@ public class Brick extends StaticEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(this.sprite, 0, 0);
+        canvas.drawImage(this.sprite, x, y);
     }
 }

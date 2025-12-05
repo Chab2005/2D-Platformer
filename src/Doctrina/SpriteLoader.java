@@ -18,4 +18,12 @@ public class SpriteLoader {
             throw new RuntimeException(e);
         }
     }
+
+    public BufferedImage loadSpriteSheet(String path) {
+        try {
+            return ImageIO.read(this.getClass().getClassLoader().getResourceAsStream(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

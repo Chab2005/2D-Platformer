@@ -6,11 +6,13 @@ public class Camera {
     private final int START_SCREEN = 1;
     private final int MIDDLE_SCREEN = 600;
 
+    private CollidableRepository collidableRepository;
     private RenderingRepository renderingRepository;
     private Player player;
 
     public Camera(Player player) {
         this.renderingRepository = RenderingRepository.getInstance();
+        this.collidableRepository = CollidableRepository.getInstance();
         this.player = player;
     }
 
@@ -38,12 +40,12 @@ public class Camera {
     }
 
     private void moveEntities() {
-        for (StaticEntity entity : renderingRepository) {
+        for (StaticEntity entity : collidableRepository) {
             if (notThePlayer(entity)) {
                 moveEntityLeft(entity);
                 moveEntityDown(entity);
                 moveEntityUp(entity);
-                //moveEntityRight(entity);
+                moveEntityRight(entity);
             }
         }
     }

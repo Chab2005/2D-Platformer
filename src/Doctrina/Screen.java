@@ -89,7 +89,6 @@ public class Screen {
         if (device.isFullScreenSupported()) {
             device.setFullScreenWindow(null);
         }
-        device.setDisplayMode(windowedDisplayMode);
         frame.setLocationRelativeTo(null);
         isFullscreenMode = false;
     }

@@ -41,7 +41,7 @@ public class MarioBrosGame extends Game {
 
 
         isfullscreen = true;
-        ;
+        world.setBackgroundColor();
     }
 
     @Override
@@ -66,5 +66,6 @@ public class MarioBrosGame extends Game {
     @Override
     public void draw(Canvas canvas) {
         instance.drawRepository(canvas);
+
     }
 }

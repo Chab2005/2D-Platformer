@@ -5,18 +5,17 @@ import Doctrina.Canvas;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.DataInput;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class World extends StaticEntity {
 
     private JsonParser jsonParser;
-    private String filePath = "resources/json/World_1-1.json";
-    private String mapPath = "images/tilesheet/tilesheet.png";
+    private static String JSON_FILE_PATH = "resources/json/TEMP4BG.json";
+    private static String MAP_PATH = "images/tilesheet/tilesheet.png";
     private Color backgroundColor;
     private Image background;
     private JsonNode jsonObj;
@@ -39,13 +38,14 @@ public class World extends StaticEntity {
         loadMap();
 
         // This is temporary ↓↓↓
-        try {
+
+        /*try {
             background = ImageIO.read(
                     this.getClass().getClassLoader().getResourceAsStream(mapPath)
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         setBackgroundColor();
     }
 
@@ -61,33 +61,73 @@ public class World extends StaticEntity {
 
     private void loadEntities() {
         initEntites();
-        System.out.println(jsonObj.toString());
     }
 
     private void initEntites(){
         SpriteLoader spriteLoader = new SpriteLoader();
+        BufferedImage spriteSheet = spriteLoader.loadSpriteSheet(MAP_PATH);
         for (Chunks chunk : layers.getChunks()) {
             int arrayChunk[] =  chunk.getData();
-            for(int i = 0; i < arrayChunk.length; i++){
+            int rowWidth = chunk.getWidth(); // 30
+            int colHeight = chunk.getHeight(); // 300
+            System.out.println(rowWidth + " " + colHeight);
 
-                    Brick brick = new Brick(chunk.getX()*16, chunk.getY()*16, spriteLoader.loadSpriteSheet());
+            int x = 0;
+            int y = 0;
+            for (int i = 0; i < arrayChunk.length; i++) {
+                x++;
+                if(i%300 == 0) {
+                    x = 0;
+                    y++;
+                }
+
+                if (arrayChunk[i] != 0) {
+                    Brick brick = new Brick(
+                            Math.abs(x*16),
+                            Math.abs(y)*16,
+                            spriteSheet.getSubimage(0,0,16,16)
+                    );
+                    collidableRepository.registerEntity(brick);
                     RenderingRepository.getInstance().registerEntities(brick);
-
-
+                }
             }
+
+
         }
+    }
+
+
+    private Image getBrickSprite(BufferedImage spriteSheet,int posistionSprite){
+        int temp = posistionSprite;
+        int ammountTileWidth = spriteSheet.getWidth()/16;
+        int ammountTileHeight = spriteSheet.getHeight()/16;
+
+
+
+        int SearchTileRow = posistionSprite/ammountTileWidth;
+        int searchTileCol =0;
+        while (temp >= ammountTileHeight) {
+            temp -= ammountTileHeight;
+        }
+
+
+
+
+
+
+
+        return spriteSheet.getSubimage(temp*16,SearchTileRow*16,16,16);
     }
 
     private void initMap() {
         try {
-            jsonObj = jsonParser.getJsonNode(filePath);
+            jsonObj = jsonParser.getJsonNode(JSON_FILE_PATH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     private void setMap() {
-
         JsonNode layerArrayNode =  jsonObj.get("layers");
         try {
             for (JsonNode layerNode : layerArrayNode) {
@@ -97,12 +137,9 @@ public class World extends StaticEntity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-
     }
 
-    private void setBackgroundColor() {
+    public void setBackgroundColor() {
         String colorCode = jsonObj.get("backgroundcolor").asText();
         backgroundColor = Color.decode(colorCode);
         RenderingEngine.getInstance().setBackgroundColor(backgroundColor);
