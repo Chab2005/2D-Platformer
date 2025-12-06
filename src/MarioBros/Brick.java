@@ -21,7 +21,7 @@ public class Brick extends StaticEntity {
         this.sprite = sprite;
         setDimension(16, 16);
         moveTo(x, y);
-        CollidableRepository.getInstance().registerEntity(this);
+
     }
 
     @Override

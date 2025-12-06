@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class World extends StaticEntity {
 
@@ -23,8 +22,12 @@ public class World extends StaticEntity {
     private CollidableRepository collidableRepository;
     private Renderer renderer;
     private Layer layers;
+    private BlockTypeService blockTypeService;
+
 
     public World() {
+        blockTypeService = new BlockTypeService();
+
         layers = new Layer();
         jsonParser = new JsonParser();
         objectMapper = new ObjectMapper();
@@ -36,21 +39,12 @@ public class World extends StaticEntity {
     public void load() {
 
         loadMap();
-
-        // This is temporary ↓↓↓
-
-        /*try {
-            background = ImageIO.read(
-                    this.getClass().getClassLoader().getResourceAsStream(mapPath)
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
         setBackgroundColor();
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawImage(background,x,y);
+        //canvas.drawRectangle(0,0,Integer.MAX_VALUE,Integer.MAX_VALUE, Color.CYAN);
+        //canvas.drawImage(background,x,y);
     }
 
     private void loadMap() {
@@ -66,6 +60,7 @@ public class World extends StaticEntity {
     private void initEntites(){
         SpriteLoader spriteLoader = new SpriteLoader();
         BufferedImage spriteSheet = spriteLoader.loadSpriteSheet(MAP_PATH);
+
         for (Chunks chunk : layers.getChunks()) {
             int arrayChunk[] =  chunk.getData();
             int rowWidth = chunk.getWidth(); // 30
@@ -81,13 +76,18 @@ public class World extends StaticEntity {
                     y++;
                 }
 
-                if (arrayChunk[i] != 0) {
+                if (!blockTypeService.isAir(arrayChunk[i])) {
+                    System.out.println(arrayChunk[i]);
                     Brick brick = new Brick(
-                            Math.abs(x*16),
-                            Math.abs(y)*16,
-                            spriteSheet.getSubimage(0,0,16,16)
+                            getRightBlockPosition(x),
+                            getRightBlockPosition(y),
+                            getBrickSprite(spriteSheet,arrayChunk[i])
                     );
-                    collidableRepository.registerEntity(brick);
+
+                    if (!blockTypeService.isDecoration(arrayChunk[i])) {
+                        collidableRepository.registerEntity(brick);
+                    }
+
                     RenderingRepository.getInstance().registerEntities(brick);
                 }
             }
@@ -97,26 +97,16 @@ public class World extends StaticEntity {
     }
 
 
-    private Image getBrickSprite(BufferedImage spriteSheet,int posistionSprite){
-        int temp = posistionSprite;
-        int ammountTileWidth = spriteSheet.getWidth()/16;
-        int ammountTileHeight = spriteSheet.getHeight()/16;
+    private int getRightBlockPosition(int position) {
+        return Math.abs(position * 16);
+    }
 
+    private Image getBrickSprite(BufferedImage spriteSheet,int index){
+        int positionX = blockTypeService.getPosX(index);
 
+        int positionY = blockTypeService.getPosY(index);
 
-        int SearchTileRow = posistionSprite/ammountTileWidth;
-        int searchTileCol =0;
-        while (temp >= ammountTileHeight) {
-            temp -= ammountTileHeight;
-        }
-
-
-
-
-
-
-
-        return spriteSheet.getSubimage(temp*16,SearchTileRow*16,16,16);
+        return spriteSheet.getSubimage(positionX,positionY,16,16);
     }
 
     private void initMap() {

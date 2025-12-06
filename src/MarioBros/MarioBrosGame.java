@@ -17,6 +17,7 @@ public class MarioBrosGame extends Game {
     private World world;
     private Camera camera;
     private JsonParser jsonParser;
+    private BackGround backGround;
 
     private boolean isfullscreen;
 
@@ -39,6 +40,7 @@ public class MarioBrosGame extends Game {
 
         RenderingEngine.getInstance().getScreen().fullscreen();
 
+        backGround = new BackGround();
 
         isfullscreen = true;
         world.setBackgroundColor();
@@ -61,10 +63,12 @@ public class MarioBrosGame extends Game {
         }
 
         player.update();
+
     }
 
     @Override
     public void draw(Canvas canvas) {
+        backGround.draw(canvas);
         instance.drawRepository(canvas);
 
     }

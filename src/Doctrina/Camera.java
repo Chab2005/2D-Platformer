@@ -40,7 +40,7 @@ public class Camera {
     }
 
     private void moveEntities() {
-        for (StaticEntity entity : collidableRepository) {
+        for (StaticEntity entity : renderingRepository) {
             if (notThePlayer(entity)) {
                 moveEntityLeft(entity);
                 moveEntityDown(entity);
