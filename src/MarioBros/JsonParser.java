@@ -36,6 +36,14 @@ public class JsonParser {
         return mapper.readTree(new File(filePath));
     }
 
+    public JsonNode getJsonObj(String filePath) {
+        try {
+            jsonObj = getJsonNode(filePath);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return jsonObj;
+    }
 
 }
 

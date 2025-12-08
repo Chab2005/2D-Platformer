@@ -1,17 +1,12 @@
 package MarioBros;
 
-public class Chunks {
-
+public class Chunk {
 
     private int data[];
     private int height;
     private int width;
     private int x;
     private int y;
-
-    public Chunks() {
-
-    }
 
     public int[] getData() {
         return data;

@@ -43,14 +43,16 @@ public class Camera {
         for (StaticEntity entity : renderingRepository) {
             if (notThePlayer(entity)) {
                 moveEntityLeft(entity);
-                moveEntityDown(entity);
-                moveEntityUp(entity);
-                moveEntityRight(entity);
+                // Keeping this in the eventuality of wanting more camera movement
+                //moveEntityDown(entity);
+                //moveEntityUp(entity);
+                //moveEntityRight(entity);
             }
         }
     }
 
     // This is here in the optic that we would allow the player to go back
+    // in the level
     private void moveEntityRight(StaticEntity entity) {
         if (player.isMovingLeft()) {
             entity.x += player.getSpeed();

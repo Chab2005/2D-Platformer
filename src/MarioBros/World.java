@@ -1,7 +1,6 @@
 package MarioBros;
 
 import Doctrina.*;
-import Doctrina.Canvas;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,18 +8,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class World extends StaticEntity {
+public class World {
 
+    public static final int POSITION_ADJUST = 392;
+    private final int SPRITE_DIMENSION = 32;
     private JsonParser jsonParser;
     private static String JSON_FILE_PATH = "resources/json/TEMP4BG.json";
-    private static String MAP_PATH = "images/tilesheet/tilesheet.png";
+    private static String MAP_PATH = "images/tilesheet/tilesheet_scaled_2x_pngcrushed.png";
     private Color backgroundColor;
-
-    private BackGround backGround;
     private JsonNode jsonObj;
     private ObjectMapper objectMapper;
     private CollidableRepository collidableRepository;
-    //private Renderer renderer;
     private Layer layers;
     private BlockTypeService blockTypeService;
     private BufferedImage spriteSheet;
@@ -28,7 +26,6 @@ public class World extends StaticEntity {
 
     public World() {
         blockTypeService = new BlockTypeService();
-        backGround = new BackGround();
         layers = new Layer();
         jsonParser = new JsonParser();
         objectMapper = new ObjectMapper();
@@ -40,45 +37,36 @@ public class World extends StaticEntity {
         setBackgroundColor();
     }
 
-    public void draw(Canvas canvas) {
-
-
-    }
-
     private void loadMap() {
         spriteSheet = loadSpriteSheet();
         initMap();
         setMap();
-        loadEntities();
+        initBlocks();
     }
 
-    private void loadEntities() {
-        initEntites();
-    }
-
-    private void initEntites(){
-        for (Chunks chunk : layers.getChunks()) {
+    private void initBlocks(){
+        for (Chunk chunk : layers.getChunks()) {
             int arrayChunk[] =  chunk.getData();
             initChunk(chunk, arrayChunk);
         }
     }
 
-    private void initChunk(Chunks chunk, int[] arrayChunk) {
+    private void initChunk(Chunk chunk, int[] arrayChunk) {
         int positionX = 0;
         int positionY = 0;
         for (int i = 0; i < arrayChunk.length; i++) {
             positionX++;
+
             if(isNextLineChunk(i, chunk.getHeight())) {
                 positionX = 0;
                 positionY++;
             }
 
             if (!blockTypeService.isAir(arrayChunk[i])) {
-                initEntity(arrayChunk[i], positionX, positionY);
+                initBlock(arrayChunk[i], positionX, positionY);
             }
         }
     }
-
 
     private boolean isNextLineChunk(int index,int widthLine) {
         return index % widthLine == 0;
@@ -89,11 +77,11 @@ public class World extends StaticEntity {
         return spriteLoader.loadSpriteSheet(MAP_PATH);
     }
 
-    private void initEntity(int index, int positionX, int positionY) {
+    private void initBlock(int index, int positionX, int positionY) {
 
         Brick brick = new Brick(
-                getRightBlockPosition(positionX),
-                getRightBlockPosition(positionY),
+                getRightBlockPositionX(positionX),
+                getRightBlockPositionY(positionY),
                 getBrickSprite(spriteSheet,index)
         );
 
@@ -104,29 +92,28 @@ public class World extends StaticEntity {
         RenderingRepository.getInstance().registerEntities(brick);
     }
 
-    private int getRightBlockPosition(int position) {
-        return Math.abs(position * 16);
+    private int getRightBlockPositionX(int position) {
+        return Math.abs(position)*SPRITE_DIMENSION;
+    }
+    private int getRightBlockPositionY(int position) {
+        return (Math.abs(position)*SPRITE_DIMENSION)- POSITION_ADJUST;
     }
 
     private Image getBrickSprite(BufferedImage spriteSheet,int index){
         int positionX = blockTypeService.getPosX(index);
         int positionY = blockTypeService.getPosY(index);
-        return spriteSheet.getSubimage(positionX,positionY,16,16);
+        return spriteSheet.getSubimage(positionX,positionY,SPRITE_DIMENSION,SPRITE_DIMENSION);
     }
 
     private void initMap() {
-        try {
-            jsonObj = jsonParser.getJsonNode(JSON_FILE_PATH);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        jsonObj = jsonParser.getJsonObj(JSON_FILE_PATH);
     }
 
     private void setMap() {
         JsonNode layerArrayNode = jsonObj.get("layers");
         try {
             for (JsonNode layerNode : layerArrayNode) {
-                Chunks chunk = objectMapper.treeToValue(layerNode, Chunks.class);
+                Chunk chunk = objectMapper.treeToValue(layerNode, Chunk.class);
                 layers.add(chunk);
             }
         } catch (IOException e) {

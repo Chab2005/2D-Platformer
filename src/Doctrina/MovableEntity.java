@@ -103,6 +103,8 @@ public abstract class MovableEntity extends StaticEntity {
 
     public boolean isMovingUp() {return (direction == Direction.UP);}
 
+    public boolean isMovingSides() {return isMovingLeft() || isMovingRight();}
+
     public int getSpeed() {
         return speed;
     }

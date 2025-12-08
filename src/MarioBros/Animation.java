@@ -20,6 +20,7 @@ public class Animation {
     private StaticEntity entity;
     private Direction lastDirection;
     private SpriteLoader spriteLoader;
+    private BufferedImage currentFrame;
 
     public Animation(StaticEntity entity) {
         this.entity = entity;
@@ -42,21 +43,35 @@ public class Animation {
     }
 
     public void drawFrame(Direction currentDirection, Canvas canvas) {
+        // has to look like that at the end
+        // canvas.drawImage(currentFrame,entity);
 
         if (currentDirection == Direction.RIGHT) {
             canvas.drawImage(rightFrames[currentAnimationFrame], entity);
             lastDirection = currentDirection;
+
         } else if (currentDirection == Direction.LEFT) {
             canvas.drawImage(leftFrames[currentAnimationFrame], entity);
             lastDirection = currentDirection;
+
         }  else if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
             if (lastDirection == Direction.RIGHT) {
-                canvas.drawImage( spriteSheet.getSubimage(32,0,entity.getWidth(),entity.getHeight()) , entity);
-            }
-            if (lastDirection == Direction.LEFT) {
+                canvas.drawImage( spriteSheet.getSubimage(64,0,entity.getWidth(),entity.getHeight()) , entity);
+            } else  {
                 canvas.drawImage(getFrame(),entity);
             }
         }
+    }
+
+    public void setFrame(PlayerStates state) {
+        currentFrame = spriteSheet.getSubimage(state.getX() + shift() ,state.getY(),entity.getWidth(),entity.getHeight());
+    }
+
+    private int shift() {
+        if (lastDirection == Direction.RIGHT) {
+            return 64;
+        }
+        return 0;
     }
 
     public void load() {
@@ -68,16 +83,16 @@ public class Animation {
     private void loadAnimationFrames() {
 
         leftFrames = new Image[4];
-        leftFrames[0] = getFrame(0,18);
-        leftFrames[1] = getFrame(0,54);
-        leftFrames[2] = getFrame(0,71);
-        leftFrames[3] = getFrame(0,36);
+        leftFrames[0] = getFrame(0,36);
+        leftFrames[1] = getFrame(0,105);
+        leftFrames[2] = getFrame(0,142);
+        leftFrames[3] = getFrame(0,72);
 
         rightFrames = new Image[4];
-        rightFrames[0] = getFrame(32,18);
-        rightFrames[1] = getFrame(32,54);
-        rightFrames[2] = getFrame(32,71);
-        rightFrames[3] = getFrame(32,36);
+        rightFrames[0] = getFrame(64,36);
+        rightFrames[1] = getFrame(64,108);
+        rightFrames[2] = getFrame(64,142);
+        rightFrames[3] = getFrame(64,72);
 
     }
 

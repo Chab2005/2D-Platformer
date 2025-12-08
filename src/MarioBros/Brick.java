@@ -12,14 +12,14 @@ public class Brick extends StaticEntity {
     private Image sprite;
 
     public Brick(int x, int y) {
-        setDimension(16, 16);
+        setDimension(32, 32);
         moveTo(x, y);
         CollidableRepository.getInstance().registerEntity(this);
     }
 
     public Brick(int x, int y,Image sprite) {
         this.sprite = sprite;
-        setDimension(16, 16);
+        setDimension(32, 32);
         moveTo(x, y);
 
     }

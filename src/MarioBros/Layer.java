@@ -5,21 +5,21 @@ import java.util.ArrayList;
 public class Layer {
 
 
-    private ArrayList<Chunks> chunks;
+    private ArrayList<Chunk> chunks;
 
     public Layer(){
         chunks = new ArrayList<>();
     }
 
-    public ArrayList<Chunks> getChunks() {
+    public ArrayList<Chunk> getChunks() {
         return chunks;
     }
 
-    public void setChunks(ArrayList<Chunks> chunks) {
+    public void setChunks(ArrayList<Chunk> chunks) {
         this.chunks = chunks;
     }
 
-    public void add(Chunks chunk) {
+    public void add(Chunk chunk) {
         chunks.add(chunk);
     }
 

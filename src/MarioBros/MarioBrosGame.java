@@ -16,7 +16,6 @@ public class MarioBrosGame extends Game {
     private GamePad gamePad;
     private World world;
     private Camera camera;
-    private JsonParser jsonParser;
     private BackGround backGround;
 
     private boolean isfullscreen;
@@ -28,22 +27,19 @@ public class MarioBrosGame extends Game {
         gamePad = new GamePad();
         player = new Player(gamePad);
 
-        enemy = new Enemy(camera);
-        enemy.moveTo(300, 300);
+        //enemy = new Enemy(camera);
+        //enemy.moveTo(300, 300);
 
         world = new World();
         world.load();
         camera = new Camera(player);
-        instance.registerEntities(world);
-        instance.registerEntities(enemy);
+        //instance.registerEntities(enemy);
         instance.registerEntities(player);
 
         RenderingEngine.getInstance().getScreen().fullscreen();
 
         backGround = new BackGround();
-
         isfullscreen = true;
-        world.setBackgroundColor();
     }
 
     @Override
@@ -57,7 +53,7 @@ public class MarioBrosGame extends Game {
         }
         isfullscreen = !gamePad.isScreenPressed();
 
-        enemy.update();
+        //enemy.update();
         if (player.isMoving()) {
             camera.follow();
         }
@@ -70,6 +66,5 @@ public class MarioBrosGame extends Game {
     public void draw(Canvas canvas) {
         backGround.draw(canvas);
         instance.drawRepository(canvas);
-
     }
 }

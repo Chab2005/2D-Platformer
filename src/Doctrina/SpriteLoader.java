@@ -6,7 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 
 public class SpriteLoader {
-    private static final String SPRITE_PATH = "images/player-sheet.png";
+    private static final String SPRITE_PATH = "images/Player_SpriteSheet.png";
 
 
 
