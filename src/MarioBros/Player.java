@@ -90,5 +90,8 @@ public class Player extends ControllableEntity {
         return playerState;
     }
 
+    public void jumpEffect() {
+        y  -= SPEED;
+    }
 
 }

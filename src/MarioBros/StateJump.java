@@ -9,7 +9,7 @@ public class StateJump implements EntityState {
     @Override
     public void update(Player player) {
         if (!player.playerJumpFinished()) {
-            player.moveUp();
+            player.jumpEffect();
         }
         if (player.playerJumpFinished() && player.canMoveDown() || !player.canMoveUp()) {
             player.updateState(new StateFalling());
