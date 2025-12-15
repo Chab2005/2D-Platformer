@@ -20,6 +20,11 @@ public class Collision {
         return 0;
     }
 
+    public boolean canEntityMoveDown() {
+        System.out.println(getAllowedDownSpeed());
+        return getAllowedDownSpeed() > 0;
+    }
+
     private int getAllowedUpSpeed() {
         return distance(other -> entity.y - (other.y + other.height));
     }
@@ -38,6 +43,22 @@ public class Collision {
 
     private int distance(DistanceCalculator calculator) {
         Rectangle collisionBound = entity.getHitBox();
+        int allowedDistance = entity.getSpeed();
+        for (StaticEntity other : CollidableRepository.getInstance()) {
+            if (collisionBound.intersects(other.getBounds())) {
+                allowedDistance = Math.min(allowedDistance,
+                        calculator.calculatesWith(other));
+            }
+        }
+        return allowedDistance;
+    }
+
+    public int getAllowedSpeedDown() {
+        return distanceDown(other -> entity.y - (other.y + other.height));
+    }
+
+    private int distanceDown(DistanceCalculator calculator) {
+        Rectangle collisionBound = entity.getHitboxDown();
         int allowedDistance = entity.getSpeed();
         for (StaticEntity other : CollidableRepository.getInstance()) {
             if (collisionBound.intersects(other.getBounds())) {

@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class MarioBrosGame extends Game {
 
+    private Sound sound;
     private RenderingRepository instance;
     private Player player;
     private Enemy enemy;
@@ -23,11 +24,12 @@ public class MarioBrosGame extends Game {
     @Override
     public void initialize() {
         instance = RenderingRepository.getInstance();
-
+        sound = new Sound();
+        //sound.playSound();
         gamePad = new GamePad();
         player = new Player(gamePad);
 
-        //enemy = new Enemy(camera);
+        enemy = new Enemy(camera);
         //enemy.moveTo(300, 300);
 
         world = new World();
@@ -54,7 +56,7 @@ public class MarioBrosGame extends Game {
         isfullscreen = !gamePad.isScreenPressed();
 
         //enemy.update();
-        if (player.isMoving()) {
+        if (player.isMoving() || player.isMovingSides()) {
             camera.follow();
         }
 

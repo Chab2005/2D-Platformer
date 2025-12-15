@@ -3,23 +3,29 @@ package MarioBros;
 import Doctrina.*;
 import Doctrina.Canvas;
 
-import java.awt.*;
-
 public class Player extends ControllableEntity {
 
-    private Animation animation;
+    private Animation<PlayerStates> animation;
     private Collision collision;
+    private final int JUMP_FORCE = 32*5;
+    private int jumpHeight;
     private final int SPEED = 6;
-    private PlayerState currentState;
+    private EntityState currentState;
+    private PlayerStates playerState;
+    private GamePad gamePad;
 
-    public Player(MovementController controller) {
+    public Player(GamePad controller) {
         super(controller);
-        currentState = new StateIdle();
+        gamePad = controller;
+
+        currentState = new StateFalling();
+        playerState = PlayerStates.FALLING;
         setDimension(32, 32);
         moveTo(150,150);
+
         setSpeed(6);
         collision = new Collision(this);
-        this.animation = new Animation(this);
+        this.animation = new Animation<>(this);
         animation.load();
     }
 
@@ -28,35 +34,78 @@ public class Player extends ControllableEntity {
         super.update();
         moveWithController();
 
-
-        //changeState(currentState);
-        currentState.update(this);
-        if (isMoving()) {
-            setSpeed(collision.getAllowedSpeed(getDirection()));
-            animation.entityAnimation();
-
-        } else {
-            setSpeed(SPEED);
-            animation.idle();
+        animation.entityAnimation();
+        /*
+        if (isJumping()) {
+            currentState = new StateJump();
         }
+        if (canMoveDown() && !isJumping() && !isMoving()) {
+            currentState = new StateFalling();
+        }
+        */
 
 
-
+        currentState.update(this);
+        updateState(currentState);
 
     }
 
-    public void changeState(PlayerState newState) {
+    public void updateState(EntityState newState) {
         currentState.exit(this);
         currentState = newState;
         currentState.enter(this);
+
     }
 
     @Override
     public void draw(Canvas canvas) {
-        animation.drawFrame(getDirection() , canvas);
+        animation.drawFramePlayer(getDirection(),canvas, playerState);
     }
 
     public boolean canMoveDown() {
+
         return collision.getAllowedSpeed(Direction.DOWN) > 0;
     }
+
+    public boolean canMoveUp() {
+        return collision.getAllowedSpeed(Direction.UP) > 0;
+    }
+
+    public void setAnimation(PlayerStates state) {
+        playerState = state;
+        animation.getFrames(state,getDirection());
+    }
+
+    public boolean isJumping() {
+        calculateJumpHeight();
+        return gamePad.isJumpPressed();
+    }
+
+    private boolean canJump() {
+        return gamePad.isJumpPressed() && playerState == PlayerStates.IDLE ;
+    }
+
+    public boolean playerJumpFinished() {
+        return y < jumpHeight;
+    }
+
+    public void jumpEffect() {
+        y -= SPEED*2;
+    }
+
+    private void calculateJumpHeight() {
+        jumpHeight = y - JUMP_FORCE;
+    }
+
+    public boolean canPlayerMoveDown() {
+        return collision.getAllowedSpeedDown() <= 0;
+    }
+
+    public boolean isGrounded() {
+
+        System.out.println(collision.getAllowedSpeedDown());
+        return collision.getAllowedSpeedDown() <= 0;
+    }
+
+
 }

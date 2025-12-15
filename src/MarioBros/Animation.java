@@ -3,35 +3,34 @@ package MarioBros;
 import Doctrina.*;
 import Doctrina.Canvas;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.ArrayList;
 
-public class Animation {
+public class Animation <E extends Enum<E> & State> {
 
 
     private static final int ANIMATION_SPEED = 8;
-    private Image[] rightFrames;
-    private Image[] leftFrames;
+
     private int currentAnimationFrame = 0;
     private int nextFrame = ANIMATION_SPEED;
     private BufferedImage spriteSheet;
     private StaticEntity entity;
+    private State lastState;
     private Direction lastDirection;
     private SpriteLoader spriteLoader;
-    private BufferedImage currentFrame;
+    private ArrayList<BufferedImage> currentFrame;
 
     public Animation(StaticEntity entity) {
         this.entity = entity;
         this.spriteLoader = new SpriteLoader();
+        currentFrame = new ArrayList<>();
     }
 
     public void entityAnimation() {
         --nextFrame;
         if (nextFrame == 0) {
             ++currentAnimationFrame;
-            if (currentAnimationFrame >= leftFrames.length) {
+            if (currentAnimationFrame >= currentFrame.size()) {
                 currentAnimationFrame = 0;
             }
             nextFrame = ANIMATION_SPEED;
@@ -42,33 +41,42 @@ public class Animation {
         currentAnimationFrame = 0; // Idle
     }
 
-    public void drawFrame(Direction currentDirection, Canvas canvas) {
-        // has to look like that at the end
-        // canvas.drawImage(currentFrame,entity);
+    public void drawFramePlayer( Direction currentDirection,Canvas canvas, E currentState) {
+        updateDirection(currentDirection);
+        updateFrameState(currentState, currentDirection);
+        canvas.drawImage(currentFrame.get(currentAnimationFrame),entity);
 
-        if (currentDirection == Direction.RIGHT) {
-            canvas.drawImage(rightFrames[currentAnimationFrame], entity);
-            lastDirection = currentDirection;
+    }
 
-        } else if (currentDirection == Direction.LEFT) {
-            canvas.drawImage(leftFrames[currentAnimationFrame], entity);
-            lastDirection = currentDirection;
+    public void drawFramePlayer(Canvas canvas) {
+        canvas.drawImage(currentFrame.get(currentAnimationFrame),entity);
+    }
 
-        }  else if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) {
-            if (lastDirection == Direction.RIGHT) {
-                canvas.drawImage( spriteSheet.getSubimage(64,0,entity.getWidth(),entity.getHeight()) , entity);
-            } else  {
-                canvas.drawImage(getFrame(),entity);
-            }
+    public void getFrames(E currentState,Direction currentDirection) {
+        resetFrame();
+        setFrames(currentState, currentDirection);
+    }
+
+    private void setFrames(E currentState,Direction currentDirection) {
+        int frames = currentState.getFrameAmmount();
+
+        for (int i = 0 ; i < frames; i++ ) {
+            currentFrame.add(
+                    getFrame(
+                            (currentState.getX()+shift(currentDirection)) ,
+                            currentState.getY() + (i*36)
+                    )
+            );
         }
+
     }
 
-    public void setFrame(PlayerStates state) {
-        currentFrame = spriteSheet.getSubimage(state.getX() + shift() ,state.getY(),entity.getWidth(),entity.getHeight());
+    private void resetFrame() {
+        currentFrame.removeAll(currentFrame);
     }
 
-    private int shift() {
-        if (lastDirection == Direction.RIGHT) {
+    private int shift(Direction currentDirection) {
+        if (lastDirection == Direction.RIGHT || currentDirection == Direction.RIGHT) {
             return 64;
         }
         return 0;
@@ -76,24 +84,6 @@ public class Animation {
 
     public void load() {
         spriteSheet = spriteLoader.loadSpriteSheet();
-        loadAnimationFrames();
-    }
-
-
-    private void loadAnimationFrames() {
-
-        leftFrames = new Image[4];
-        leftFrames[0] = getFrame(0,36);
-        leftFrames[1] = getFrame(0,105);
-        leftFrames[2] = getFrame(0,142);
-        leftFrames[3] = getFrame(0,72);
-
-        rightFrames = new Image[4];
-        rightFrames[0] = getFrame(64,36);
-        rightFrames[1] = getFrame(64,108);
-        rightFrames[2] = getFrame(64,142);
-        rightFrames[3] = getFrame(64,72);
-
     }
 
     private BufferedImage getFrame() {
@@ -102,5 +92,21 @@ public class Animation {
 
     private BufferedImage getFrame(int x, int y) {
         return spriteSheet.getSubimage(x,y,entity.getWidth(),entity.getHeight());
+    }
+
+
+    private void updateFrameState(E currentState,Direction currentDirection) {
+        if (currentState != lastState) {
+            lastState = currentState;
+            getFrames(currentState,currentDirection);
+            //setFrames(currentState,currentDirection);
+            currentAnimationFrame = 0;
+        }
+    }
+
+    private void updateDirection(Direction direction) {
+        if (direction != lastDirection) {
+            lastDirection = direction;
+        }
     }
 }

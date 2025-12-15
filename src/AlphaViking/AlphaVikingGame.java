@@ -25,17 +25,7 @@ public class AlphaVikingGame extends Game {
         world.load();
         tree = new Tree(300, 350);
 
-        try {
-            Clip clip = AudioSystem.getClip();
-            AudioInputStream stream = AudioSystem.getAudioInputStream(
-                this.getClass().getClassLoader().getResourceAsStream("audios/music.wav")
-            );
-            clip.open(stream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         RenderingEngine.getInstance().getScreen().windowed();
     }

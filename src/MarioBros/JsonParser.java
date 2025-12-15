@@ -12,11 +12,11 @@ import java.io.IOException;
 
 
 public class JsonParser {
-    private CollidableRepository collidableRepository;
+
     private ObjectMapper mapper;
     private final File JSON_FILE = new File("/json/World_1-1.json");
     private JsonNode jsonObj;
-    private int chunks[];
+
 
     public JsonParser() {
         this.mapper = new ObjectMapper();

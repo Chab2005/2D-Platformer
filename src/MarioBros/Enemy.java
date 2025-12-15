@@ -36,13 +36,13 @@ public class Enemy extends MovableEntity {
         if (!hasMoved()) {
             animation.idle();
         } else {
-            animation.entityAnimation();
+
         }
 
     }
 
     @Override
     public void draw(Canvas canvas) {
-        animation.drawFrame(getDirection(),canvas);
+        animation.drawFramePlayer(canvas);
     }
 }

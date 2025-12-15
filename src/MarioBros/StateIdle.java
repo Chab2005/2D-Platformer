@@ -1,30 +1,30 @@
 package MarioBros;
 
-public class StateIdle implements PlayerState {
-
-
+public class StateIdle implements EntityState {
 
     @Override
     public void enter(Player player) {
-        //player.setDimension(12,);
+        player.setAnimation(PlayerStates.IDLE);
     }
 
     @Override
     public void update(Player player) {
-        if (player.isMovingUp()) {
-            player.changeState(new StateJump());
+        if (player.isMovingSides() ) {
+            player.updateState(new StateRun());
         }
-        if (player.isMovingSides()) {
-            player.changeState(new StateRun());
+        if (player.isJumping()) {
+            player.updateState(new StateJump());
         }
-        if (player.isMoving()) {
-            player.changeState(new StateFalling());
-        }
-
+        player.isGrounded();
     }
 
     @Override
     public void exit(Player player) {
 
+    }
+
+    @Override
+    public EntityState getCurrentState() {
+        return this;
     }
 }

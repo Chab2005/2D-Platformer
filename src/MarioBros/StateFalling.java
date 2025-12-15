@@ -1,32 +1,30 @@
 package MarioBros;
 
-public class StateFalling implements PlayerState{
+public class StateFalling implements EntityState {
     @Override
     public void enter(Player player) {
+        player.setAnimation(PlayerStates.FALLING);
         player.moveDown();
-
     }
 
     @Override
     public void update(Player player) {
-        System.out.println("IS MOVING DOWN");
-        if (!player.canMoveDown()) {
-            player.changeState(new StateIdle());
-        } else {
-            player.changeState(new StateFalling());
+        if (player.isGrounded()) {
+            player.updateState(new StateIdle());
         }
-        if (player.isMovingSides()) {
-            player.changeState(new StateRun());
-        }
-        if (player.isMovingUp()) {
-            player.changeState(new StateJump());
-        }
-
 
     }
 
+
+
+
     @Override
     public void exit(Player player) {
+        player.setAnimation(PlayerStates.IDLE);
+    }
 
+    @Override
+    public EntityState getCurrentState() {
+        return this;
     }
 }

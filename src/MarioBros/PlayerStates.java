@@ -1,11 +1,11 @@
 package MarioBros;
 
-public enum PlayerStates {
-    IDLE(0,36),
-    RUN(0,105),
-    AIRBORNE(0,142),
-    GROUNDED(0,72),
-    FALLING(64,0);
+public enum PlayerStates implements State {
+    IDLE(0,36,1),
+    RUN(0,36,3),
+    AIRBORNE(0,0,1),
+    GROUNDED(0,72,1),
+    FALLING(0,0,1);
     //TALL_IDLE,
     //TALL_RUN,
     //TALL_AIRBORNE,
@@ -15,17 +15,27 @@ public enum PlayerStates {
 
     private int x;
     private int y;
+    private int frameAmmount;
 
-    PlayerStates(int x, int y) {
+    PlayerStates(int x, int y, int frameAmmount) {
         this.x = x;
         this.y = y;
+        this.frameAmmount = frameAmmount;
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public int getY() {
         return y;
     }
+
+    @Override
+    public int getFrameAmmount() {
+        return frameAmmount;
+    }
+
 }

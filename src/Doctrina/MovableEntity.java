@@ -29,6 +29,10 @@ public abstract class MovableEntity extends StaticEntity {
         return getBounds();
     }
 
+    public Rectangle getHitboxDown() {
+        return getLowerHitBox();
+    }
+
     public boolean hitBoxIntersectsWith(StaticEntity other) {
         if (other == null) {
             return false;

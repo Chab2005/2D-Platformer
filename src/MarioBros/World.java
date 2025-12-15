@@ -10,8 +10,8 @@ import java.io.IOException;
 
 public class World {
 
-    public static final int POSITION_ADJUST = 392;
-    private final int SPRITE_DIMENSION = 32;
+    private static final int POSITION_ADJUST = 392;
+    private static final int SPRITE_DIMENSION = 32;
     private JsonParser jsonParser;
     private static String JSON_FILE_PATH = "resources/json/TEMP4BG.json";
     private static String MAP_PATH = "images/tilesheet/tilesheet_scaled_2x_pngcrushed.png";
@@ -27,7 +27,7 @@ public class World {
     public World() {
         blockTypeService = new BlockTypeService();
         layers = new Layer();
-        jsonParser = new JsonParser();
+        jsonParser = new  JsonParser();
         objectMapper = new ObjectMapper();
         collidableRepository = collidableRepository.getInstance();
     }
