@@ -35,19 +35,9 @@ public class Player extends ControllableEntity {
         moveWithController();
 
         animation.entityAnimation();
-        /*
-        if (isJumping()) {
-            currentState = new StateJump();
-        }
-        if (canMoveDown() && !isJumping() && !isMoving()) {
-            currentState = new StateFalling();
-        }
-        */
-
 
         currentState.update(this);
         updateState(currentState);
-
     }
 
     public void updateState(EntityState newState) {
@@ -81,30 +71,23 @@ public class Player extends ControllableEntity {
         return gamePad.isJumpPressed();
     }
 
-    private boolean canJump() {
-        return gamePad.isJumpPressed() && playerState == PlayerStates.IDLE ;
-    }
-
     public boolean playerJumpFinished() {
         return y < jumpHeight;
     }
 
-    public void jumpEffect() {
-        y -= SPEED*2;
-    }
 
     private void calculateJumpHeight() {
         jumpHeight = y - JUMP_FORCE;
     }
 
-    public boolean canPlayerMoveDown() {
+
+
+    public boolean isGrounded() {
         return collision.getAllowedSpeedDown() <= 0;
     }
 
-    public boolean isGrounded() {
-
-        System.out.println(collision.getAllowedSpeedDown());
-        return collision.getAllowedSpeedDown() <= 0;
+    public State getCurrentState() {
+        return playerState;
     }
 
 

@@ -54,7 +54,7 @@ public class Collision {
     }
 
     public int getAllowedSpeedDown() {
-        return distanceDown(other -> entity.y - (other.y + other.height));
+        return distanceDown(other -> other.y - (entity.y + other.height));
     }
 
     private int distanceDown(DistanceCalculator calculator) {

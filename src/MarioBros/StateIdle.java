@@ -13,9 +13,9 @@ public class StateIdle implements EntityState {
             player.updateState(new StateRun());
         }
         if (player.isJumping()) {
+            SoundEffect.JUMP.play();
             player.updateState(new StateJump());
         }
-        player.isGrounded();
     }
 
     @Override

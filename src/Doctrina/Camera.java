@@ -1,10 +1,12 @@
 package Doctrina;
 
 import MarioBros.Player;
+import MarioBros.PlayerStates;
+import MarioBros.State;
 
 public class Camera {
     private final int START_SCREEN = 1;
-    private final int MIDDLE_SCREEN = 600;
+    private final int MIDDLE_SCREEN = 400;
 
     private CollidableRepository collidableRepository;
     private RenderingRepository renderingRepository;
@@ -27,7 +29,7 @@ public class Camera {
     }
 
 
-    private void cameraRightRestriction() {
+    private void  cameraRightRestriction() {
         if (isPlayerAtHalfScreen()) {
             player.x -= player.getSpeed();
         }
@@ -60,7 +62,7 @@ public class Camera {
     }
 
     private void moveEntityLeft(StaticEntity entity) {
-        if (isPlayerAtHalfScreen() && player.isMovingRight()) {
+        if (isPlayerAtHalfScreen() && player.isMovingRight() || isPlayerAtHalfScreen() && player.getCurrentState() == PlayerStates.FALLING) {
             entity.x -= player.getSpeed();
         }
     }
@@ -82,10 +84,10 @@ public class Camera {
     }
 
     private boolean isPlayerAtHalfScreen() {
-        return player.x > MIDDLE_SCREEN;
+        return player.x >= MIDDLE_SCREEN;
     }
 
     private boolean isPlayerAtStartScreen() {
-        return player.x < START_SCREEN;
+        return player.x <= START_SCREEN;
     }
 }

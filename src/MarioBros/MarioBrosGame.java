@@ -30,7 +30,7 @@ public class MarioBrosGame extends Game {
         player = new Player(gamePad);
 
         enemy = new Enemy(camera);
-        //enemy.moveTo(300, 300);
+        enemy.moveTo(300, 300);
 
         world = new World();
         world.load();
@@ -56,9 +56,11 @@ public class MarioBrosGame extends Game {
         isfullscreen = !gamePad.isScreenPressed();
 
         //enemy.update();
-        if (player.isMoving() || player.isMovingSides()) {
+
+
             camera.follow();
-        }
+
+
 
         player.update();
 

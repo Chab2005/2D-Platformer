@@ -12,7 +12,6 @@ public class StateFalling implements EntityState {
         if (player.isGrounded()) {
             player.updateState(new StateIdle());
         }
-
     }
 
 

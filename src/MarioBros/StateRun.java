@@ -9,19 +9,16 @@ public class StateRun implements EntityState {
 
     @Override
     public void update(Player player) {
-
-
         if (!player.isMoving() ) {
             player.updateState(new StateIdle());
         }
         if (player.isJumping()) {
+            SoundEffect.JUMP.play();
             player.updateState(new StateJump());
         }
-        if (!player.isGrounded()    ) {
+        if (!player.isGrounded()) {
             player.updateState(new StateFalling());
         }
-
-
     }
 
     @Override

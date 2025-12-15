@@ -3,8 +3,6 @@ package MarioBros;
 public enum PlayerStates implements State {
     IDLE(0,36,1),
     RUN(0,36,3),
-    AIRBORNE(0,0,1),
-    GROUNDED(0,72,1),
     FALLING(0,0,1);
     //TALL_IDLE,
     //TALL_RUN,
