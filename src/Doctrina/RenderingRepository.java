@@ -10,6 +10,7 @@ import java.util.List;
 
 public class RenderingRepository implements Iterable<StaticEntity> {
 
+    private final int RENDER_DISTANCE = 700;
     private static RenderingRepository instance;
     private List<StaticEntity> staticEntities;
 
@@ -28,6 +29,11 @@ public class RenderingRepository implements Iterable<StaticEntity> {
         staticEntities.remove(staticEntity);
     }
 
+    @Override
+    public Iterator<StaticEntity> iterator() {
+        return staticEntities.iterator();
+    }
+
     public void unregisterEntities(int index) {
         staticEntities.remove(index);
     }
@@ -39,24 +45,36 @@ public class RenderingRepository implements Iterable<StaticEntity> {
     }
 
     public void update() {
+        Player player = getPlayer();
         for (StaticEntity entity : staticEntities) {
-            if (entity instanceof MovableEntity) {
-                ((MovableEntity) entity).update();
+            if (!(entity instanceof Player)) {
+                if (entity instanceof Enemy && isEnemyInRange(entity,player) ) {
+                    ((MovableEntity) entity).update();
+                }
+            } else {
+                ((Player) entity).update();
             }
         }
     }
 
+    public boolean isEnemyInRange(StaticEntity enemy,Player player) {
+        return enemy.getX() < player.getX()+RENDER_DISTANCE;
+    }
 
     public List<StaticEntity> getStaticEntities() {
         return staticEntities;
     }
 
-    @Override
-    public Iterator<StaticEntity> iterator() {
-        return staticEntities.iterator();
-    }
-
     private RenderingRepository() {
         staticEntities = new ArrayList<>();
+    }
+
+    private Player getPlayer() {
+        for (StaticEntity entity : staticEntities) {
+            if (entity instanceof Player) {
+                return (Player) entity;
+            }
+        }
+        return null;
     }
 }
