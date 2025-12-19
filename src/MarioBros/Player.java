@@ -5,6 +5,7 @@ import Doctrina.Canvas;
 
 import java.awt.*;
 import java.util.Objects;
+import java.util.Random;
 
 public class Player extends ControllableEntity {
 
@@ -70,11 +71,22 @@ public class Player extends ControllableEntity {
         if (playerJumpOnEnemy()) {
             calculateJumpHeight();
             currentState = new StateJump();
-            SoundEffect.STOMP.playOnce();
-            score+=STOMPING_SCORE;
+            stompSound();
         } else {
             updateHp();
         }
+    }
+
+    private void stompSound() {
+        Random rand = new Random();
+        if (rand.nextBoolean()) {
+            SoundEffect.STOMP.playOnce();
+            score+=STOMPING_SCORE;
+        } else  {
+            SoundEffect.MURLOC.playOnce();
+            score+=STOMPING_SCORE*10;
+        }
+
     }
 
     public int getLastStaticEntity() {

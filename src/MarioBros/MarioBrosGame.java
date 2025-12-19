@@ -33,11 +33,10 @@ public class MarioBrosGame extends Game {
         paused = true;
         pauseWasPressed = false;
         instance = RenderingRepository.getInstance();
-        //SoundEffect.MUSIC_1_1.play();
+
+        SoundEffect.MUSIC_1_1.play();
         initGame();
     }
-
-
 
     @Override
     public void update() {
@@ -49,8 +48,6 @@ public class MarioBrosGame extends Game {
         }
     }
 
-
-
     @Override
     public void draw(Canvas canvas) {
         backGround.draw(canvas);
@@ -59,6 +56,7 @@ public class MarioBrosGame extends Game {
             canvas.drawString("PAUSED",375,250,Color.WHITE);
         }
         if (winState) {
+
             canvas.drawString("YOU WON",375,250,Color.WHITE);
         }
     }
@@ -77,6 +75,8 @@ public class MarioBrosGame extends Game {
 
         if (isFlagValid()) {
             winState = true;
+            SoundEffect.MUSIC_1_1.stop();
+            SoundEffect.WIN.playOnce();
         }
     }
 

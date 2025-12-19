@@ -22,7 +22,7 @@ public class EntityCollision {
         enemies = new ArrayList<>();
         for (StaticEntity entity : instance.getStaticEntities()) {
             if (entity instanceof Enemy) {
-                this.enemies.add(  entity);
+                this.enemies.add(entity);
             }
             if (entity instanceof FlagPole) {
                 this.enemies.add(entity);
@@ -34,7 +34,6 @@ public class EntityCollision {
         for (StaticEntity enemy : enemies) {
             if (player.intersectsWith(enemy)) {
                 lastStaticEntity = RenderingRepository.getInstance().getStaticEntities().indexOf(enemy);
-
                 return true;
             }
         }

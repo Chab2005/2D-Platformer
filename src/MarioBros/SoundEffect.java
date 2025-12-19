@@ -11,7 +11,8 @@ public enum SoundEffect {
     PAUSE("audios/smb_pause.wav"),
     BUMP("audios/smb_bump.wav"),
     DIE("audios/smb_mariodie.wav"),
-    STOMP("audios/smb_stomp.wav"),;
+    STOMP("audios/smb_stomp.wav"),
+    WIN("audios/smb_stage_clear.wav"),;
 
     private String path;
 
@@ -57,5 +58,15 @@ public enum SoundEffect {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void stop() {
+        try {
+            Clip clip = AudioSystem.getClip();
+            clip.stop();
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
