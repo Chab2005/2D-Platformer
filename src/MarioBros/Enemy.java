@@ -15,7 +15,7 @@ public abstract class Enemy extends MovableEntity {
         setDimension(32,32);
         moveTo(100,100);
 
-        setSpeed(4);
+        setSpeed(3);
         setDirection(Direction.RIGHT);
         collision = new Collision(this);
         this.animation = new Animation<>(this);

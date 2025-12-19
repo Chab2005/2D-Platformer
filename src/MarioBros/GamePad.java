@@ -12,6 +12,7 @@ public class GamePad extends MovementController {
     private int leftKey = KeyEvent.VK_A;
     private int rightKey = KeyEvent.VK_D;
     private int screenKey = KeyEvent.VK_F;
+    private int pauseKey = KeyEvent.VK_P;
 
     public GamePad() {
         bindKey(quitKey);
@@ -20,13 +21,13 @@ public class GamePad extends MovementController {
         bindKey(leftKey);
         bindKey(rightKey);
         bindKey(screenKey);
+        bindKey(pauseKey);
     }
 
 
+    public boolean isPausedPressed() {return isKeyPressed(pauseKey);}
 
-    public boolean isQuitPressed() {
-        return isKeyPressed(quitKey);
-    }
+    public boolean isQuitPressed() {return isKeyPressed(quitKey);}
 
     public boolean isFirePressed() {
         return isKeyPressed(fireKey);

@@ -21,7 +21,7 @@ public class Player extends ControllableEntity {
         currentState = new StateFalling();
         playerState = PlayerStates.FALLING;
         setDimension(32, 32);
-        moveTo(150,150);
+        moveTo(150,450);
 
         setSpeed(6);
         collision = new Collision(this);
@@ -37,9 +37,8 @@ public class Player extends ControllableEntity {
         lockMovement();
 
         animation.entityAnimation();
+        stateUpdate();
 
-        currentState.update(this);
-        updateState(currentState);
     }
 
 
@@ -112,5 +111,10 @@ public class Player extends ControllableEntity {
         if (isMoving() && getDirection() == Direction.DOWN) {
             y-=getSpeed();
         }
+    }
+
+    private void stateUpdate() {
+        currentState.update(this);
+        updateState(currentState);
     }
 }

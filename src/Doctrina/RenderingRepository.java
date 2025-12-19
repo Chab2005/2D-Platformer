@@ -31,6 +31,15 @@ public class RenderingRepository implements Iterable<StaticEntity> {
         }
     }
 
+    public void update() {
+        for (StaticEntity entity : staticEntities) {
+            if (entity instanceof MovableEntity) {
+                ((MovableEntity) entity).update();
+            }
+        }
+
+    }
+
     @Override
     public Iterator<StaticEntity> iterator() {
         return staticEntities.iterator();

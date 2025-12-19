@@ -19,11 +19,16 @@ public class MarioBrosGame extends Game {
     private Camera camera;
     private BackGround backGround;
 
+
     private boolean isfullscreen;
+    private boolean paused;
+    private boolean pauseWasPressed;
 
     @Override
     public void initialize() {
         instance = RenderingRepository.getInstance();
+        paused = true;
+        pauseWasPressed = false;
         SoundEffect.MUSIC_1_1.play();
         gamePad = new GamePad();
         player = new Player(gamePad);
@@ -45,24 +50,34 @@ public class MarioBrosGame extends Game {
 
     @Override
     public void update() {
-        if (gamePad.isQuitPressed()) {
-            stop();
+        pauseMechanic();
+        screenSizeMechanic();
+
+        if (paused) {
+            if (gamePad.isQuitPressed()) {
+                stop();
+            }
+            camera.follow();
+            RenderingRepository.getInstance().update();
         }
 
-        if (gamePad.isScreenPressed() && isfullscreen) {
 
+
+    }
+
+    private void screenSizeMechanic() {
+        if (gamePad.isScreenPressed() && isfullscreen) {
             RenderingEngine.getInstance().getScreen().screenToggle();
         }
-
-
         isfullscreen = !gamePad.isScreenPressed();
+    }
 
-        camera.follow();
-
-
-
-        player.update();
-        goomba.update();
+    private void pauseMechanic() {
+        boolean pausePressed = gamePad.isPausedPressed();
+        if (pausePressed && !pauseWasPressed) {
+            paused = !paused;
+        }
+        pauseWasPressed = pausePressed;
     }
 
     @Override

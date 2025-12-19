@@ -17,6 +17,8 @@ public class CollidableRepository implements Iterable<StaticEntity> {
         return instance;
     }
 
+
+
     public void registerEntity(StaticEntity entity) {
         registeredEntities.add(entity);
     }
