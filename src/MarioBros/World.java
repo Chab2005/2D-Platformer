@@ -81,18 +81,36 @@ public class World {
     }
 
     private void initBlock(int index, int positionX, int positionY) {
-
-        Brick brick = new Brick(
-                getRightBlockPositionX(positionX),
-                getRightBlockPositionY(positionY),
-                getBrickSprite(spriteSheet,index)
-        );
+        Brick brickToAdd = null;
+        brickToAdd = getBrickToAdd(index, positionX, positionY);
 
         if (!blockTypeService.isDecoration(index)) {
-            collidableRepository.registerEntity(brick);
+            collidableRepository.registerEntity(brickToAdd);
         }
 
-        RenderingRepository.getInstance().registerEntities(brick);
+        RenderingRepository.getInstance().registerEntities(brickToAdd);
+    }
+
+    private Brick getBrickToAdd(int index, int positionX, int positionY) {
+        Brick brickToAdd;
+        if (isFlagPolePart(index)) {
+            brickToAdd = new FlagPole(
+                    getRightBlockPositionX(positionX),
+                    getRightBlockPositionY(positionY),
+                    getBrickSprite(spriteSheet, index)
+            );
+        } else {
+            brickToAdd = new Brick(
+                    getRightBlockPositionX(positionX),
+                    getRightBlockPositionY(positionY),
+                    getBrickSprite(spriteSheet, index)
+            );
+        }
+        return brickToAdd;
+    }
+
+    private boolean isFlagPolePart(int index) {
+        return index == BlockType.FLAG_POLE_BODY.getIndex() || index == BlockType.FLAG_POLE_TOP.getIndex();
     }
 
     private int getRightBlockPositionX(int position) {

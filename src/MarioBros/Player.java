@@ -67,19 +67,14 @@ public class Player extends ControllableEntity {
     }
 
     private void playerCollisionUpdate() {
-
-
-            if (playerJumpOnEnemy()) {
-                calculateJumpHeight();
-                currentState = new StateJump();
-                SoundEffect.STOMP.playOnce();
-                score+=STOMPING_SCORE;
-
-            } else {
-                updateHp();
-            }
-
-
+        if (playerJumpOnEnemy()) {
+            calculateJumpHeight();
+            currentState = new StateJump();
+            SoundEffect.STOMP.playOnce();
+            score+=STOMPING_SCORE;
+        } else {
+            updateHp();
+        }
     }
 
     public int getLastStaticEntity() {

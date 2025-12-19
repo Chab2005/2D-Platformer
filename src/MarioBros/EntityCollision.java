@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class EntityCollision {
     private RenderingRepository instance;
     private int lastStaticEntity;
-    private ArrayList<Enemy> enemies ;
+    private ArrayList<StaticEntity> enemies ;
 
     public EntityCollision() {
         this.instance = RenderingRepository.getInstance();
@@ -22,13 +22,16 @@ public class EntityCollision {
         enemies = new ArrayList<>();
         for (StaticEntity entity : instance.getStaticEntities()) {
             if (entity instanceof Enemy) {
-                this.enemies.add( (Enemy) entity);
+                this.enemies.add(  entity);
+            }
+            if (entity instanceof FlagPole) {
+                this.enemies.add(entity);
             }
         }
     }
 
     public Boolean isPlayerInCollision(Player player) {
-        for (Enemy enemy : enemies) {
+        for (StaticEntity enemy : enemies) {
             if (player.intersectsWith(enemy)) {
                 lastStaticEntity = RenderingRepository.getInstance().getStaticEntities().indexOf(enemy);
 

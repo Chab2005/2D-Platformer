@@ -20,7 +20,7 @@ public enum BlockType {
     CASTLE_WINDOW_RIGHT(15,448,0,true),
 
     FLAG_POLE_BODY(210, 192,224,true),
-    FALG_POLE_TOP(249,512,256,true),
+    FLAG_POLE_TOP(249,512,256,true),
     MOUNTAIN_START_SLOPE(241,256,256,true),
     MOUNTAIN_END_SLOPE(243,320,256,true),
     MOUNTAIN_EYE_RIGHT(270,256,288,true),
@@ -59,6 +59,10 @@ public enum BlockType {
 
     public int getPosY(int index) {
         return getBlockType(index).posY;
+    }
+
+    public int getIndex() {
+        return getBlockType(index).index;
     }
 
     private BlockType getBlockType(int index) {
