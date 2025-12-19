@@ -29,7 +29,7 @@ public class MarioBrosGame extends Game {
         instance = RenderingRepository.getInstance();
         paused = true;
         pauseWasPressed = false;
-        SoundEffect.MUSIC_1_1.play();
+        //SoundEffect.MUSIC_1_1.play();
         gamePad = new GamePad();
         player = new Player(gamePad);
         goomba = new Goomba();
@@ -52,18 +52,21 @@ public class MarioBrosGame extends Game {
     public void update() {
         pauseMechanic();
         screenSizeMechanic();
-
-        if (paused) {
-            if (gamePad.isQuitPressed()) {
-                stop();
-            }
-            camera.follow();
-            RenderingRepository.getInstance().update();
+        mainUpdateLoop();
+        if (gamePad.isQuitPressed()) {
+            stop();
         }
 
 
-
     }
+
+    private void mainUpdateLoop() {
+        if (paused) {
+            camera.follow();
+            instance.update();
+        }
+    }
+
 
     private void screenSizeMechanic() {
         if (gamePad.isScreenPressed() && isfullscreen) {
@@ -73,16 +76,23 @@ public class MarioBrosGame extends Game {
     }
 
     private void pauseMechanic() {
+
         boolean pausePressed = gamePad.isPausedPressed();
         if (pausePressed && !pauseWasPressed) {
             paused = !paused;
+            SoundEffect.PAUSE.playOnce();
+
         }
         pauseWasPressed = pausePressed;
     }
 
     @Override
     public void draw(Canvas canvas) {
+
         backGround.draw(canvas);
         instance.drawRepository(canvas);
+        if (!paused) {
+            canvas.drawString("PAUSED",375,250,Color.WHITE);
+        }
     }
 }

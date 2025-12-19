@@ -7,7 +7,11 @@ import javax.sound.sampled.Clip;
 public enum SoundEffect {
     MUSIC_1_1("audios/1-1.wav"),
     JUMP("audios/smb_jump-small.wav"),
-    MURLOC("audios/murloc.wav");
+    MURLOC("audios/murloc.wav"),
+    PAUSE("audios/smb_pause.wav"),
+    BUMP("audios/smb_bump.wav"),
+    DIE("audios/smb_mariodie.wav"),
+    STOMP("audios/smb_stomp.wav"),;
 
     private String path;
 

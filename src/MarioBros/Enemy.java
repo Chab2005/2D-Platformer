@@ -13,7 +13,7 @@ public abstract class Enemy extends MovableEntity {
     public Enemy(){
 
         setDimension(32,32);
-        moveTo(100,100);
+        moveTo(100,450);
 
         setSpeed(3);
         setDirection(Direction.RIGHT);

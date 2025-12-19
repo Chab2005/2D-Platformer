@@ -3,21 +3,30 @@ package MarioBros;
 import Doctrina.*;
 import Doctrina.Canvas;
 
+import java.awt.*;
+import java.util.Objects;
+
 public class Player extends ControllableEntity {
 
     private Animation<PlayerStates> animation;
     private Collision collision;
     private final int JUMP_FORCE = 32*5;
-    private int jumpHeight;
     private final int SPEED = 6;
+    private final int STOMPING_SCORE = 100;
+    private int jumpHeight;
+
     private PlayerState currentState;
     private PlayerStates playerState;
     private GamePad gamePad;
+    private boolean isAlive;
+
+    private int score;
 
     public Player(GamePad controller) {
         super(controller);
         gamePad = controller;
-
+        score = 0;
+        isAlive = true;
         currentState = new StateFalling();
         playerState = PlayerStates.FALLING;
         setDimension(32, 32);
@@ -31,22 +40,56 @@ public class Player extends ControllableEntity {
 
     @Override
     public void update() {
-        super.update();
-        moveWithController();
+        if (isAlive) {
+            super.update();
+            moveWithController();
+            lockMovement();
+            animation.entityAnimation();
 
-        lockMovement();
-
-        animation.entityAnimation();
+            playerCollisionUpdate();
+        }
         stateUpdate();
 
     }
 
-
-
     @Override
     public void draw(Canvas canvas) {
         animation.drawFramePlayer(getDirection(),canvas, playerState);
+        if (!isAlive) {
+            canvas.drawString("DEAD",375,250, Color.WHITE);
+        }
+        canvas.drawString("Score: "+score,700,20, Color.WHITE);
     }
+
+    private void playerCollisionUpdate() {
+        if (playerJumpOnEnemy()) {
+            currentState = new StateJump();
+            SoundEffect.STOMP.playOnce();
+            score+=STOMPING_SCORE;
+
+        } else {
+            updateHp();
+        }
+    }
+
+    private boolean playerJumpOnEnemy() {
+        return isPlayerRunningIntoEnemy() && collision.getAllowedSpeedDown() > 0;
+    }
+
+    private boolean isPlayerRunningIntoEnemy() {
+        return RenderingRepository.getInstance().isPlayerInCollision(this);
+    }
+
+    private void updateHp() {
+        if (isPlayerInVoid() || isPlayerRunningIntoEnemy()) {
+            isAlive = false;
+            SoundEffect.DIE.playOnce();
+            currentState = new StateDead();
+        }
+    }
+
+
+
 
     public void updateState(PlayerState newState) {
         currentState.exit(this);
@@ -96,6 +139,10 @@ public class Player extends ControllableEntity {
         y += collision.getAllowedSpeedDown();
     }
 
+    public void deadFall() {
+        y += SPEED/3;
+    }
+
     private void lockMovement() {
         lockMovementDown();
         lockMovementUp();
@@ -116,5 +163,9 @@ public class Player extends ControllableEntity {
     private void stateUpdate() {
         currentState.update(this);
         updateState(currentState);
+    }
+
+    private boolean isPlayerInVoid() {
+        return y >= 600;
     }
 }

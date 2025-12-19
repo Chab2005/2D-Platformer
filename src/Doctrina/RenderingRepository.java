@@ -1,5 +1,8 @@
 package Doctrina;
 
+import MarioBros.Enemy;
+import MarioBros.Player;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,7 +40,15 @@ public class RenderingRepository implements Iterable<StaticEntity> {
                 ((MovableEntity) entity).update();
             }
         }
+    }
 
+    public Boolean isPlayerInCollision(Player player) {
+        for (StaticEntity entity : staticEntities) {
+            if (entity instanceof Enemy) {
+                return entity.intersectsWith(player);
+            }
+        }
+        return false;
     }
 
     @Override

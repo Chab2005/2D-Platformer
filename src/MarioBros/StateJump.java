@@ -11,6 +11,9 @@ public class StateJump implements PlayerState {
         if (!player.playerJumpFinished()) {
             player.jumpEffect();
         }
+        if (!player.playerJumpFinished() && !player.canMoveUp()) {
+            SoundEffect.BUMP.playOnce();
+        }
         if (player.playerJumpFinished() && player.canMoveDown() || !player.canMoveUp()) {
             player.updateState(new StateFalling());
         }
