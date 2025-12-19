@@ -11,7 +11,6 @@ public abstract class Enemy extends MovableEntity {
 
 
     public Enemy(){
-
         setDimension(32,32);
         moveTo(100,450);
 
@@ -21,6 +20,7 @@ public abstract class Enemy extends MovableEntity {
         this.animation = new Animation<>(this);
         animation.load("images/entity/goomba.png");
         animation.setEntityFrames(3);
+
     }
 
     @Override

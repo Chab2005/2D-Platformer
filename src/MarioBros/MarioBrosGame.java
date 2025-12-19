@@ -19,28 +19,31 @@ public class MarioBrosGame extends Game {
     private Camera camera;
     private BackGround backGround;
 
-
+    private boolean started;
     private boolean isfullscreen;
     private boolean paused;
     private boolean pauseWasPressed;
 
     @Override
     public void initialize() {
+        started = false;
         instance = RenderingRepository.getInstance();
         paused = true;
+        world = new World();
+
+        world.load();
         pauseWasPressed = false;
         //SoundEffect.MUSIC_1_1.play();
         gamePad = new GamePad();
         player = new Player(gamePad);
-        goomba = new Goomba();
+        //goomba = new Goomba();
 
 
-        world = new World();
-        world.load();
+
         camera = new Camera(player);
 
         instance.registerEntities(player);
-        instance.registerEntities(goomba);
+        //instance.registerEntities(goomba);
 
         RenderingEngine.getInstance().getScreen().fullscreen();
 
@@ -50,22 +53,26 @@ public class MarioBrosGame extends Game {
 
     @Override
     public void update() {
+
         pauseMechanic();
         screenSizeMechanic();
         mainUpdateLoop();
         if (gamePad.isQuitPressed()) {
             stop();
         }
-
-
     }
 
     private void mainUpdateLoop() {
         if (paused) {
             camera.follow();
             instance.update();
+            unloadJumpedEnemies();
+
+
         }
     }
+
+
 
 
     private void screenSizeMechanic() {
@@ -73,6 +80,18 @@ public class MarioBrosGame extends Game {
             RenderingEngine.getInstance().getScreen().screenToggle();
         }
         isfullscreen = !gamePad.isScreenPressed();
+    }
+
+
+
+    @Override
+    public void draw(Canvas canvas) {
+
+        backGround.draw(canvas);
+        instance.drawRepository(canvas);
+        if (!paused) {
+            canvas.drawString("PAUSED",375,250,Color.WHITE);
+        }
     }
 
     private void pauseMechanic() {
@@ -86,13 +105,30 @@ public class MarioBrosGame extends Game {
         pauseWasPressed = pausePressed;
     }
 
-    @Override
-    public void draw(Canvas canvas) {
+    private boolean idEntityNotDefault(int id) {
+        return id != -1;
+    }
 
-        backGround.draw(canvas);
-        instance.drawRepository(canvas);
-        if (!paused) {
-            canvas.drawString("PAUSED",375,250,Color.WHITE);
+    private void unloadJumpedEnemies() {
+        if (isEntityValid()) {
+            moveEntityToShadowRealm();
+            removeFromRepositories();
+            player.setLastStaticEntity();
         }
+    }
+
+    private boolean isEntityValid() {
+        return idEntityNotDefault(player.getLastStaticEntity()) && instance.getStaticEntities().get(player.getLastStaticEntity()) instanceof Enemy;
+    }
+
+    private void removeFromRepositories() {
+        CollidableRepository.getInstance().unregisterEntity(
+                instance.getStaticEntities().get(player.getLastStaticEntity())
+        );
+        instance.unregisterEntities( player.getLastStaticEntity());
+    }
+
+    private void moveEntityToShadowRealm() {
+        instance.getStaticEntities().get(player.getLastStaticEntity()).moveTo(10000,10000);
     }
 }

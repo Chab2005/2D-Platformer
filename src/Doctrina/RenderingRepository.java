@@ -28,6 +28,10 @@ public class RenderingRepository implements Iterable<StaticEntity> {
         staticEntities.remove(staticEntity);
     }
 
+    public void unregisterEntities(int index) {
+        staticEntities.remove(index);
+    }
+
     public void drawRepository(Canvas canvas) {
         for (StaticEntity staticEntity : staticEntities) {
             staticEntity.draw(canvas);
@@ -42,13 +46,9 @@ public class RenderingRepository implements Iterable<StaticEntity> {
         }
     }
 
-    public Boolean isPlayerInCollision(Player player) {
-        for (StaticEntity entity : staticEntities) {
-            if (entity instanceof Enemy) {
-                return entity.intersectsWith(player);
-            }
-        }
-        return false;
+
+    public List<StaticEntity> getStaticEntities() {
+        return staticEntities;
     }
 
     @Override

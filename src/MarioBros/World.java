@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class World {
 
@@ -41,7 +42,9 @@ public class World {
         spriteSheet = loadSpriteSheet();
         initMap();
         setMap();
+
         initBlocks();
+        initEnemies();
     }
 
     private void initBlocks(){
@@ -121,11 +124,21 @@ public class World {
         }
     }
 
-    /*
-    public void setBackgroundColor() {
-        String colorCode = jsonObj.get("backgroundcolor").asText();
-        backgroundColor = Color.decode(colorCode);
-        RenderingEngine.getInstance().setBackgroundColor(backgroundColor);
+    public void initEnemies() {
+        ArrayList<Enemy> enemies = new ArrayList<>();
+        JsonNode enemiesNode = jsonObj.get("enemies");
+        try {
+            for (JsonNode enemyNode :  enemiesNode) {
+                Goomba enemy = objectMapper.treeToValue(enemyNode,Goomba.class);
+                enemies.add(enemy);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Enemy enemy : enemies) {
+            RenderingRepository.getInstance().registerEntities(enemy);
+        }
+
     }
-    */
 }

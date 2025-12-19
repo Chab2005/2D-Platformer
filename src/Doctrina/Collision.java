@@ -29,12 +29,10 @@ public class Collision {
     }
 
     public boolean canEntityMoveLeft() {
-        System.out.println(getAllowedLeftSpeed());
         return getAllowedLeftSpeed() > 0;
     }
 
     public boolean canEntityMoveRight() {
-        System.out.println(getAllowedRightSpeed());
         return getAllowedRightSpeed() > 0;
     }
 

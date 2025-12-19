@@ -21,7 +21,6 @@ public class Brick extends StaticEntity {
         this.sprite = sprite;
         setDimension(32, 32);
         moveTo(x, y);
-
     }
 
     @Override

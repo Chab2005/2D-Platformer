@@ -10,10 +10,13 @@ public class Player extends ControllableEntity {
 
     private Animation<PlayerStates> animation;
     private Collision collision;
+    private EntityCollision entityCollision;
+
     private final int JUMP_FORCE = 32*5;
     private final int SPEED = 6;
     private final int STOMPING_SCORE = 100;
     private int jumpHeight;
+
 
     private PlayerState currentState;
     private PlayerStates playerState;
@@ -27,6 +30,7 @@ public class Player extends ControllableEntity {
         gamePad = controller;
         score = 0;
         isAlive = true;
+        entityCollision = new EntityCollision();
         currentState = new StateFalling();
         playerState = PlayerStates.FALLING;
         setDimension(32, 32);
@@ -47,6 +51,7 @@ public class Player extends ControllableEntity {
             animation.entityAnimation();
 
             playerCollisionUpdate();
+
         }
         stateUpdate();
 
@@ -62,22 +67,36 @@ public class Player extends ControllableEntity {
     }
 
     private void playerCollisionUpdate() {
-        if (playerJumpOnEnemy()) {
-            currentState = new StateJump();
-            SoundEffect.STOMP.playOnce();
-            score+=STOMPING_SCORE;
 
-        } else {
-            updateHp();
-        }
+
+            if (playerJumpOnEnemy()) {
+                calculateJumpHeight();
+                currentState = new StateJump();
+                SoundEffect.STOMP.playOnce();
+                score+=STOMPING_SCORE;
+
+            } else {
+                updateHp();
+            }
+
+
+    }
+
+    public int getLastStaticEntity() {
+        return entityCollision.getLastStaticEntity();
+    }
+
+    public void setLastStaticEntity() {
+        entityCollision.setLastStaticEntity();
     }
 
     private boolean playerJumpOnEnemy() {
+
         return isPlayerRunningIntoEnemy() && collision.getAllowedSpeedDown() > 0;
     }
 
     private boolean isPlayerRunningIntoEnemy() {
-        return RenderingRepository.getInstance().isPlayerInCollision(this);
+        return entityCollision.isPlayerInCollision(this);
     }
 
     private void updateHp() {
