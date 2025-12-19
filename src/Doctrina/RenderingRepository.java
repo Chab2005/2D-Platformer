@@ -3,14 +3,13 @@ package Doctrina;
 import MarioBros.Enemy;
 import MarioBros.Player;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class RenderingRepository implements Iterable<StaticEntity> {
 
-    private final int RENDER_DISTANCE = 700;
+    private final int SIMULATION_DISTANCE = 700;
     private static RenderingRepository instance;
     private List<StaticEntity> staticEntities;
 
@@ -58,7 +57,7 @@ public class RenderingRepository implements Iterable<StaticEntity> {
     }
 
     public boolean isEnemyInRange(StaticEntity enemy,Player player) {
-        return enemy.getX() < player.getX()+RENDER_DISTANCE;
+        return enemy.getX() < player.getX()+ SIMULATION_DISTANCE;
     }
 
     public List<StaticEntity> getStaticEntities() {
