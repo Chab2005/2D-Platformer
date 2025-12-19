@@ -10,10 +10,10 @@ import java.io.IOException;
 
 public class MarioBrosGame extends Game {
 
-    private Sound sound;
+
     private RenderingRepository instance;
     private Player player;
-    private Enemy enemy;
+    private Goomba goomba;
     private GamePad gamePad;
     private World world;
     private Camera camera;
@@ -24,19 +24,18 @@ public class MarioBrosGame extends Game {
     @Override
     public void initialize() {
         instance = RenderingRepository.getInstance();
-        sound = new Sound();
-        //sound.playSound();
+        SoundEffect.MUSIC_1_1.play();
         gamePad = new GamePad();
         player = new Player(gamePad);
+        goomba = new Goomba();
 
-        enemy = new Enemy(camera);
-        enemy.moveTo(300, 300);
 
         world = new World();
         world.load();
         camera = new Camera(player);
-        //instance.registerEntities(enemy);
+
         instance.registerEntities(player);
+        instance.registerEntities(goomba);
 
         RenderingEngine.getInstance().getScreen().fullscreen();
 
@@ -51,19 +50,19 @@ public class MarioBrosGame extends Game {
         }
 
         if (gamePad.isScreenPressed() && isfullscreen) {
+
             RenderingEngine.getInstance().getScreen().screenToggle();
         }
+
+
         isfullscreen = !gamePad.isScreenPressed();
 
-        //enemy.update();
-
-
-            camera.follow();
+        camera.follow();
 
 
 
         player.update();
-
+        goomba.update();
     }
 
     @Override

@@ -11,6 +11,8 @@ public class Animation <E extends Enum<E> & State> {
 
     private static final int ANIMATION_SPEED = 8;
 
+    private static final int SHIFT = 64;
+    private static final int FRAME_DISTANCE = 36;
     private int currentAnimationFrame = 0;
     private int nextFrame = ANIMATION_SPEED;
     private BufferedImage spriteSheet;
@@ -48,7 +50,7 @@ public class Animation <E extends Enum<E> & State> {
 
     }
 
-    public void drawFramePlayer(Canvas canvas) {
+    public void drawFrameEntity(Canvas canvas) {
         canvas.drawImage(currentFrame.get(currentAnimationFrame),entity);
     }
 
@@ -59,16 +61,21 @@ public class Animation <E extends Enum<E> & State> {
 
     private void setFrames(E currentState,Direction currentDirection) {
         int frames = currentState.getFrameAmmount();
-
         for (int i = 0 ; i < frames; i++ ) {
             currentFrame.add(
                     getFrame(
                             (currentState.getX()+shift(currentDirection)) ,
-                            currentState.getY() + (i*36)
+                            currentState.getY() + (i*FRAME_DISTANCE)
                     )
             );
         }
 
+    }
+
+    public void setEntityFrames(int frames) {
+        for (int i = 0 ; i < frames; i++ ) {
+            currentFrame.add( getFrame (0, i*32));
+        }
     }
 
     private void resetFrame() {
@@ -77,13 +84,17 @@ public class Animation <E extends Enum<E> & State> {
 
     private int shift(Direction currentDirection) {
         if (lastDirection == Direction.RIGHT || currentDirection == Direction.RIGHT) {
-            return 64;
+            return SHIFT;
         }
         return 0;
     }
 
     public void load() {
         spriteSheet = spriteLoader.loadSpriteSheet();
+    }
+
+    public void load(String path) {
+        spriteSheet = spriteLoader.loadSpriteSheet(path);
     }
 
     private BufferedImage getFrame() {
@@ -99,7 +110,6 @@ public class Animation <E extends Enum<E> & State> {
         if (currentState != lastState) {
             lastState = currentState;
             getFrames(currentState,currentDirection);
-            //setFrames(currentState,currentDirection);
             currentAnimationFrame = 0;
         }
     }

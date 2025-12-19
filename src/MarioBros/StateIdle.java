@@ -1,6 +1,6 @@
 package MarioBros;
 
-public class StateIdle implements EntityState {
+public class StateIdle implements PlayerState {
 
     @Override
     public void enter(Player player) {
@@ -9,12 +9,12 @@ public class StateIdle implements EntityState {
 
     @Override
     public void update(Player player) {
-        if (player.isMovingSides() ) {
+        if (player.isMovingSides() && player.isMoving()) {
             player.updateState(new StateRun());
         }
         if (player.isJumping()) {
-            SoundEffect.JUMP.play();
             player.updateState(new StateJump());
+            SoundEffect.JUMP.playOnce();
         }
     }
 
@@ -24,7 +24,7 @@ public class StateIdle implements EntityState {
     }
 
     @Override
-    public EntityState getCurrentState() {
+    public PlayerState getCurrentState() {
         return this;
     }
 }

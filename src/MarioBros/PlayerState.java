@@ -1,9 +1,9 @@
 package MarioBros;
 
-public interface EntityState {
+public interface PlayerState {
 
     void enter(Player player);
     void update(Player player);
     void exit(Player player);
-    EntityState getCurrentState();
+    PlayerState getCurrentState();
 }

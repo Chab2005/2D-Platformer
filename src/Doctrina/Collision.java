@@ -21,8 +21,21 @@ public class Collision {
     }
 
     public boolean canEntityMoveDown() {
-        System.out.println(getAllowedDownSpeed());
         return getAllowedDownSpeed() > 0;
+    }
+
+    public boolean canEntityMoveUp() {
+        return getAllowedUpSpeed() > 0;
+    }
+
+    public boolean canEntityMoveLeft() {
+        System.out.println(getAllowedLeftSpeed());
+        return getAllowedLeftSpeed() > 0;
+    }
+
+    public boolean canEntityMoveRight() {
+        System.out.println(getAllowedRightSpeed());
+        return getAllowedRightSpeed() > 0;
     }
 
     private int getAllowedUpSpeed() {
@@ -56,6 +69,7 @@ public class Collision {
     public int getAllowedSpeedDown() {
         return distanceDown(other -> other.y - (entity.y + other.height));
     }
+
 
     private int distanceDown(DistanceCalculator calculator) {
         Rectangle collisionBound = entity.getHitboxDown();

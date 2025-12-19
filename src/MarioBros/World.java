@@ -34,7 +34,7 @@ public class World {
 
     public void load() {
         loadMap();
-        setBackgroundColor();
+        //setBackgroundColor();
     }
 
     private void loadMap() {
@@ -121,9 +121,11 @@ public class World {
         }
     }
 
+    /*
     public void setBackgroundColor() {
         String colorCode = jsonObj.get("backgroundcolor").asText();
         backgroundColor = Color.decode(colorCode);
         RenderingEngine.getInstance().setBackgroundColor(backgroundColor);
     }
+    */
 }

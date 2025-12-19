@@ -2,7 +2,6 @@ package Doctrina;
 
 import MarioBros.Player;
 import MarioBros.PlayerStates;
-import MarioBros.State;
 
 public class Camera {
     private final int START_SCREEN = 1;

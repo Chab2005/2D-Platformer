@@ -2,7 +2,6 @@ package Doctrina;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.IOException;
 
 public class SpriteLoader {

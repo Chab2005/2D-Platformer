@@ -1,6 +1,6 @@
 package MarioBros;
 
-public class StateRun implements EntityState {
+public class StateRun implements PlayerState {
 
     @Override
     public void enter(Player player) {
@@ -13,7 +13,7 @@ public class StateRun implements EntityState {
             player.updateState(new StateIdle());
         }
         if (player.isJumping()) {
-            SoundEffect.JUMP.play();
+            SoundEffect.JUMP.playOnce();
             player.updateState(new StateJump());
         }
         if (!player.isGrounded()) {
@@ -27,7 +27,7 @@ public class StateRun implements EntityState {
     }
 
     @Override
-    public EntityState getCurrentState() {
+    public PlayerState getCurrentState() {
         return this;
     }
 }

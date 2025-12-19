@@ -1,6 +1,6 @@
 package MarioBros;
 
-public class StateJump implements EntityState {
+public class StateJump implements PlayerState {
     @Override
     public void enter(Player player) {
         player.setAnimation(PlayerStates.FALLING);
@@ -22,7 +22,7 @@ public class StateJump implements EntityState {
     }
 
     @Override
-    public EntityState getCurrentState() {
+    public PlayerState getCurrentState() {
         return this;
     }
 }

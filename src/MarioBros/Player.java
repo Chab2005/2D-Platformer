@@ -10,7 +10,7 @@ public class Player extends ControllableEntity {
     private final int JUMP_FORCE = 32*5;
     private int jumpHeight;
     private final int SPEED = 6;
-    private EntityState currentState;
+    private PlayerState currentState;
     private PlayerStates playerState;
     private GamePad gamePad;
 
@@ -34,26 +34,28 @@ public class Player extends ControllableEntity {
         super.update();
         moveWithController();
 
+        lockMovement();
+
         animation.entityAnimation();
 
         currentState.update(this);
         updateState(currentState);
     }
 
-    public void updateState(EntityState newState) {
-        currentState.exit(this);
-        currentState = newState;
-        currentState.enter(this);
 
-    }
 
     @Override
     public void draw(Canvas canvas) {
         animation.drawFramePlayer(getDirection(),canvas, playerState);
     }
 
-    public boolean canMoveDown() {
+    public void updateState(PlayerState newState) {
+        currentState.exit(this);
+        currentState = newState;
+        currentState.enter(this);
+    }
 
+    public boolean canMoveDown() {
         return collision.getAllowedSpeed(Direction.DOWN) > 0;
     }
 
@@ -75,12 +77,9 @@ public class Player extends ControllableEntity {
         return y < jumpHeight;
     }
 
-
     private void calculateJumpHeight() {
         jumpHeight = y - JUMP_FORCE;
     }
-
-
 
     public boolean isGrounded() {
         return collision.getAllowedSpeedDown() <= 0;
@@ -94,4 +93,24 @@ public class Player extends ControllableEntity {
         y  -= SPEED;
     }
 
+    public void moveDown() {
+        y += collision.getAllowedSpeedDown();
+    }
+
+    private void lockMovement() {
+        lockMovementDown();
+        lockMovementUp();
+    }
+
+    private void lockMovementUp() {
+        if (isMoving() && getDirection() == Direction.UP) {
+            y+=getSpeed();
+        }
+    }
+
+    private void lockMovementDown() {
+        if (isMoving() && getDirection() == Direction.DOWN) {
+            y-=getSpeed();
+        }
+    }
 }
