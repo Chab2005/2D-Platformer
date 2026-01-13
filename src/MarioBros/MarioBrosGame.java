@@ -6,10 +6,7 @@ import Doctrina.RenderingRepository;
 
 import java.awt.*;
 
-
-
 public class MarioBrosGame extends Game {
-
 
     private RenderingRepository instance;
     private Player player;
@@ -18,8 +15,6 @@ public class MarioBrosGame extends Game {
     private Camera camera;
     private BackGround backGround;
 
-
-
     private boolean winState;
     private boolean isfullscreen;
     private boolean paused;
@@ -27,7 +22,6 @@ public class MarioBrosGame extends Game {
 
     @Override
     public void initialize() {
-
         gamePad = new GamePad();
         winState = false;
         paused = true;
@@ -56,7 +50,6 @@ public class MarioBrosGame extends Game {
             canvas.drawString("PAUSED",375,250,Color.WHITE);
         }
         if (winState) {
-
             canvas.drawString("YOU WON",375,250,Color.WHITE);
         }
     }
@@ -72,7 +65,6 @@ public class MarioBrosGame extends Game {
     }
 
     private void hasPlayerWon() {
-
         if (isFlagValid()) {
             winState = true;
             SoundEffect.MUSIC_1_1.stop();

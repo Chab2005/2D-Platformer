@@ -12,7 +12,7 @@ public class Animation <E extends Enum<E> & State> {
     private static final int ANIMATION_SPEED = 8;
 
     private static final int SHIFT = 64;
-    private static final int FRAME_DISTANCE = 36;
+    private static final int SPRITE_DISTANCE = 36;
     private int currentAnimationFrame = 0;
     private int nextFrame = ANIMATION_SPEED;
     private BufferedImage spriteSheet;
@@ -39,10 +39,6 @@ public class Animation <E extends Enum<E> & State> {
         }
     }
 
-    public void idle() {
-        currentAnimationFrame = 0; // Idle
-    }
-
     public void drawFramePlayer( Direction currentDirection,Canvas canvas, E currentState) {
         updateDirection(currentDirection);
         updateFrameState(currentState, currentDirection);
@@ -63,13 +59,21 @@ public class Animation <E extends Enum<E> & State> {
         int frames = currentState.getFrameAmmount();
         for (int i = 0 ; i < frames; i++ ) {
             currentFrame.add(
-                    getFrame(
-                            (currentState.getX()+shift(currentDirection)) ,
-                            currentState.getY() + (i*FRAME_DISTANCE)
-                    )
+                getFrame(
+                        getCurrentEntityStateFrameX(currentState,currentDirection),
+                        getCurrentEntityStateFrameY(currentState,i)
+                )
             );
         }
+    }
 
+
+    public int getCurrentEntityStateFrameY(E currentState,int frameIndex) {
+        return currentState.getY() + (frameIndex*SPRITE_DISTANCE);
+    }
+
+    public int getCurrentEntityStateFrameX(E currentState,Direction currentDirection) {
+        return currentState.getX()+shift(currentDirection);
     }
 
     public void setEntityFrames(int frames) {
@@ -95,10 +99,6 @@ public class Animation <E extends Enum<E> & State> {
 
     public void load(String path) {
         spriteSheet = spriteLoader.loadSpriteSheet(path);
-    }
-
-    private BufferedImage getFrame() {
-        return spriteSheet.getSubimage(0,0,entity.getWidth(),entity.getHeight());
     }
 
     private BufferedImage getFrame(int x, int y) {

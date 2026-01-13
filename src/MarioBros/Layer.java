@@ -15,13 +15,7 @@ public class Layer {
         return chunks;
     }
 
-    public void setChunks(ArrayList<Chunk> chunks) {
-        this.chunks = chunks;
-    }
-
     public void add(Chunk chunk) {
         chunks.add(chunk);
     }
-
-
 }

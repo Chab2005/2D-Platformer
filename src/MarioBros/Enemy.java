@@ -7,9 +7,6 @@ public abstract class Enemy extends MovableEntity {
     protected Animation<PlayerStates> animation;
     private Collision collision;
 
-
-
-
     public Enemy(){
         setDimension(32,32);
         moveTo(100,450);
@@ -39,7 +36,6 @@ public abstract class Enemy extends MovableEntity {
         rightMovement();
         leftMovement();
     }
-
 
     private void leftMovement() {
         if (getDirection() == Direction.LEFT ) {
